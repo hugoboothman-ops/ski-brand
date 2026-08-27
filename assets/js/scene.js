@@ -163,8 +163,8 @@
       ? lerp(902, 1040, t)
       : lerp(1040, 1071, tail));                 /* 15:02 -> 17:51, light gone */
 
-    readouts.wind.textContent = wind + ' km/h';
-    readouts.temp.textContent = '−' + Math.abs(temp) + '°';
+    readouts.wind.textContent = wind + '\u00a0km/h';
+    readouts.temp.textContent = '\u2212' + Math.abs(temp) + '\u00b0';
     readouts.time.textContent = pad(Math.floor(mins / 60)) + ':' + pad(mins % 60);
 
     var act = currentAct(t, zone);
@@ -207,14 +207,17 @@
     var dt = Math.min((now - last) / 1000, 0.05);
     last = now;
 
+    /* All layout reads first; every write below then happens against one
+       measurement instead of forcing a reflow mid-frame. */
     var t = heroProgress();
-    var s = K.storyState(t);
     var page = pageProgress();
     var zone = zoneAt();
+    var tail = tailProgress();
+    var s = K.storyState(t);
 
     scrubVideo(t, dt);
     updateCues(t);
-    updateHud(t, s, page, zone, tailProgress());
+    updateHud(t, s, page, zone, tail);
 
     /* Theatre iris: a tight pool of light on the cold open, wide for the
        weather, then closing hard as attention narrows onto the kit. */

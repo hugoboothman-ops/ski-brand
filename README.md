@@ -8,8 +8,22 @@ Static HTML, CSS and JavaScript. No build step, no framework, no dependencies
 at runtime.
 
 ```
+npm install
 npm run dev     # serve at http://localhost:4173
 ```
+
+## Hosting requirement
+
+**The host must serve HTTP Range requests.** Scrubbing is seeking, and a
+browser will only seek within `video.seekable` — which is empty unless the
+server answers `Range` with `206 Partial Content`. Without it every
+`currentTime` assignment is silently ignored and the hero sits frozen on the
+first frame with no error anywhere.
+
+Netlify, Vercel, Cloudflare Pages, S3/CloudFront and nginx all do this by
+default. Python's `http.server` does not, which is why `npm run dev` runs
+`tools/serve.mjs` instead. The site detects the failure at runtime and falls
+back to the live canvas storm, but that is a safety net, not the intent.
 
 ## The concept
 
@@ -111,6 +125,14 @@ npm run placeholder
 `tools/render-placeholder.mjs` drives `assets/js/storm.js` frame by frame in
 headless Chromium and pipes the frames to ffmpeg. Because the simulation is
 seeded and stepped with a fixed `dt`, the render is reproducible.
+
+`tools/shoot-site.mjs` screenshots the running site at a list of scroll
+positions, which is the quickest way to check the whole scroll after a change:
+
+```
+node tools/shoot-site.mjs http://localhost:4173/ 0.02,0.3,0.75,1.0
+node tools/shoot-site.mjs http://localhost:4173/ 0.02,0.3 390 844   # mobile
+```
 
 `tools/preview-frames.mjs` renders single frames across the timeline into
 `tools/preview/` for checking the look without a full encode:

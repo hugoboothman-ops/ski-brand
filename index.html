@@ -33,7 +33,7 @@
 <section class="hero" id="hero" aria-labelledby="hero-title">
   <div class="hero__stage">
 
-    <video class="hero__video" id="hero-video"
+    <video class="hero__video" id="hero-video" width="1280" height="720"
            playsinline muted preload="auto" disablepictureinpicture
            poster="assets/video/hero-poster.jpg" aria-hidden="true">
       <!-- Final footage: supply H.264 MP4 first, WebM second. -->
@@ -58,7 +58,7 @@
       <div class="cue cue--left" data-in="0.13" data-out="0.34">
         <p class="eyebrow">Act I &mdash; Environment</p>
         <h2 class="display"><span>First,</span><span>the weather.</span></h2>
-        <p class="lede">At 2,940 metres the light lasts three hours and the wind
+        <p class="lede">At 2,940&nbsp;metres the light lasts three hours and the wind
         writes the schedule. The lifts stop. The pistes empty. What is left is
         weather, and the few people who came for it.</p>
       </div>
@@ -145,7 +145,7 @@
       </div>
       <div class="piece__meta">
         <h3 class="piece__name">Northwall</h3>
-        <p class="piece__spec">186 &middot; 108 waist</p>
+        <p class="piece__spec">186 &middot; 108&nbsp;waist</p>
       </div>
     </li>
     <li class="piece piece--ski" data-reveal style="--d:1">
@@ -154,7 +154,7 @@
       </div>
       <div class="piece__meta">
         <h3 class="piece__name">Low Light</h3>
-        <p class="piece__spec">178 &middot; 96 waist</p>
+        <p class="piece__spec">178 &middot; 96&nbsp;waist</p>
       </div>
     </li>
     <li class="piece piece--ski" data-reveal style="--d:2">
@@ -163,7 +163,7 @@
       </div>
       <div class="piece__meta">
         <h3 class="piece__name">Heirloom</h3>
-        <p class="piece__spec">192 &middot; 88 waist</p>
+        <p class="piece__spec">192 &middot; 88&nbsp;waist</p>
       </div>
     </li>
   </ol>
@@ -180,7 +180,8 @@
       <label class="signup__label" for="email">Winter 01 releases in October.</label>
       <div class="signup__row">
         <input class="signup__input" id="email" name="email" type="email"
-               autocomplete="email" placeholder="you@address" required>
+               autocomplete="email" inputmode="email" spellcheck="false"
+               placeholder="rider@example.com" required>
         <button class="signup__btn" type="submit">Join the list</button>
       </div>
       <p class="signup__note" id="signup-note" role="status">One message, in October. Nothing else.</p>
@@ -199,9 +200,9 @@
 <div class="hud" id="hud" aria-hidden="true">
   <div class="hud__bar"><span class="hud__fill" id="hud-fill"></span></div>
   <dl class="hud__fields">
-    <div class="hud__f"><dt>Alt</dt><dd id="hud-alt">2 940 m</dd></div>
+    <div class="hud__f"><dt>Alt</dt><dd id="hud-alt">2&#8239;940&nbsp;m</dd></div>
     <div class="hud__f"><dt>Temp</dt><dd id="hud-temp">&minus;9&deg;</dd></div>
-    <div class="hud__f"><dt>Wind</dt><dd id="hud-wind">6 km/h</dd></div>
+    <div class="hud__f"><dt>Wind</dt><dd id="hud-wind">6&nbsp;km/h</dd></div>
     <div class="hud__f hud__f--wide"><dt>Time</dt><dd id="hud-time">15:02</dd></div>
     <div class="hud__f hud__f--act"><dt>Act</dt><dd id="hud-act">I &mdash; Environment</dd></div>
   </dl>

@@ -21,6 +21,8 @@
 
   /* rhythm */
   --gut:  clamp(1.25rem, 5vw, 5.5rem);
+  --gut-l: max(var(--gut), env(safe-area-inset-left));
+  --gut-r: max(var(--gut), env(safe-area-inset-right));
   --stack: clamp(4.5rem, 12vh, 10rem);
 
   /* driven from JS */
@@ -42,6 +44,8 @@ html {
 
 body {
   margin: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(195, 148, 69, 0.24);
   background: var(--blackout);
   color: var(--bone);
   font-family: var(--body);
@@ -188,7 +192,6 @@ body {
     rgba(5, 6, 7, 0.62) 72%,
     rgba(5, 6, 7, 0.96) 100%
   );
-  transition: background 120ms linear;
 }
 
 .hero__grain {
@@ -205,7 +208,7 @@ body {
   inset: 0;
   display: grid;
   align-content: center;
-  padding: clamp(4.5rem, 10vh, 8rem) var(--gut);
+  padding: clamp(4.5rem, 10vh, 8rem) var(--gut-r) clamp(4.5rem, 10vh, 8rem) var(--gut-l);
   pointer-events: none;
 }
 
@@ -290,7 +293,8 @@ body {
 
 .act {
   position: relative;
-  padding: var(--stack) var(--gut);
+  scroll-margin-top: 2rem;
+  padding: var(--stack) var(--gut-r) var(--stack) var(--gut-l);
 }
 
 .range__head { max-width: 62rem; margin: 0 0 clamp(3.5rem, 9vh, 7rem); }
@@ -386,6 +390,7 @@ body {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--slate-dim);
+  font-variant-numeric: tabular-nums;
 }
 .piece__price { color: var(--slate); margin-top: 0.35rem; }
 
@@ -412,6 +417,7 @@ body {
 .close__inner { position: relative; max-width: 58rem; }
 
 .signup { margin: clamp(3rem, 8vh, 5.5rem) 0 0; max-width: 30rem; }
+.signup__row { scroll-margin-bottom: 6rem; }
 
 .signup__label {
   display: block;
@@ -479,7 +485,7 @@ body {
   gap: 1rem 2rem;
   align-items: baseline;
   justify-content: space-between;
-  padding: clamp(2.5rem, 6vh, 4rem) var(--gut) clamp(6rem, 12vh, 8rem);
+  padding: clamp(2.5rem, 6vh, 4rem) var(--gut-r) calc(clamp(6rem, 12vh, 8rem) + env(safe-area-inset-bottom)) var(--gut-l);
   border-top: 1px solid rgba(233, 229, 221, 0.08);
 }
 
@@ -513,7 +519,7 @@ body {
   right: 0;
   bottom: 0;
   z-index: 40;
-  padding: 0.7rem var(--gut) 0.85rem;
+  padding: 0.7rem var(--gut-r) calc(0.85rem + env(safe-area-inset-bottom)) var(--gut-l);
   background: linear-gradient(transparent, rgba(5, 6, 7, 0.88) 55%);
   pointer-events: none;
   opacity: 0;
@@ -591,6 +597,5 @@ body {
     transform: none;
     filter: none;
   }
-  .hero__iris { transition: none; }
   .scrollcue::after { display: none; }
 }
