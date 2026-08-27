@@ -107,7 +107,7 @@ body {
   font-family: var(--display);
   font-weight: 600;
   font-variation-settings: "wdth" 112;
-  font-size: clamp(2.6rem, 8.4vw, 7.6rem);
+  font-size: clamp(2.5rem, 7.9vw, 7.1rem);
   line-height: 0.88;
   letter-spacing: -0.018em;
   text-transform: uppercase;
@@ -218,7 +218,7 @@ body {
   align-self: center;
   max-width: min(52ch, 100%);
 }
-.cue--left  { max-width: min(60rem, 100%); }
+.cue--left  { max-width: min(68rem, 100%); }
 .cue--quote { justify-self: end; text-align: right; max-width: min(30ch, 100%); }
 .cue--open  { justify-self: center; text-align: center; }
 
@@ -297,7 +297,7 @@ body {
   padding: var(--stack) var(--gut-r) var(--stack) var(--gut-l);
 }
 
-.range__head { max-width: 62rem; margin: 0 0 clamp(3.5rem, 9vh, 7rem); }
+.range__head { max-width: 68rem; margin: 0 0 clamp(3.5rem, 9vh, 7rem); }
 
 .rack {
   list-style: none;
@@ -414,7 +414,7 @@ body {
   pointer-events: none;
 }
 
-.close__inner { position: relative; max-width: 58rem; }
+.close__inner { position: relative; max-width: 66rem; }
 
 .signup { margin: clamp(3rem, 8vh, 5.5rem) 0 0; max-width: 30rem; }
 .signup__row { scroll-margin-bottom: 6rem; }

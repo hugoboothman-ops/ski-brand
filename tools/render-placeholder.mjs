@@ -18,14 +18,15 @@ import { mkdirSync, writeFileSync, existsSync, readdirSync, statSync } from 'nod
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..');
 
-const W = 1280;
-const H = 720;
-const FPS = 24;
-const SECONDS = 11;
+const W = Number(process.env.W) || 1280;
+const H = Number(process.env.H) || 720;
+const FPS = Number(process.env.FPS) || 24;
+const SECONDS = Number(process.env.SECONDS) || 11;
+const BITRATE = process.env.BITRATE || '2400k';
 const TOTAL = FPS * SECONDS;
 
 const OUT_DIR = resolve(root, 'assets/video');
-const OUT_WEBM = resolve(OUT_DIR, 'hero-placeholder.webm');
+const OUT_WEBM = resolve(OUT_DIR, process.env.OUT || 'hero-placeholder.webm');
 const OUT_POSTER = resolve(OUT_DIR, 'hero-poster.jpg');
 
 function findFfmpeg() {
@@ -68,7 +69,7 @@ const enc = spawn(ffmpeg, [
   // The bundled ffmpeg cannot probe a raw JPEG pipe, so name the decoder.
   '-f', 'image2pipe', '-vcodec', 'mjpeg', '-framerate', String(FPS), '-i', 'pipe:0',
   '-c:v', 'libvpx',
-  '-b:v', '2400k',
+  '-b:v', BITRATE,
   '-g', '1',                 // every frame a keyframe — seek anywhere, instantly
   '-deadline', 'good', '-cpu-used', '2',
   '-an',
@@ -89,7 +90,7 @@ for (let i = 0; i < TOTAL; i++) {
   await page.evaluate((n) => window.renderFrame(n), i);
   const buf = await page.locator('#c').screenshot({ type: 'jpeg', quality: 92 });
 
-  if (i === Math.round(TOTAL * 0.02)) writeFileSync(OUT_POSTER, buf);
+  if (i === Math.round(TOTAL * 0.02) && !process.env.SKIP_POSTER) writeFileSync(OUT_POSTER, buf);
 
   if (!enc.stdin.write(buf)) {
     await new Promise((r) => enc.stdin.once('drain', r));
