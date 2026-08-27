@@ -47,8 +47,17 @@ if (!ffmpeg) {
 
 mkdirSync(OUT_DIR, { recursive: true });
 
+/* Prefer an explicit path, then the sandbox's pre-installed Chromium, then
+   whatever playwright-core resolves on its own. */
+function findChromium() {
+  if (process.env.CHROMIUM_PATH) return process.env.CHROMIUM_PATH;
+  const pinned = '/opt/pw-browsers/chromium';
+  return existsSync(pinned) ? pinned : undefined;
+}
+
 const browser = await chromium.launch({
-  executablePath: process.env.CHROMIUM_PATH || undefined
+  executablePath: findChromium(),
+  args: ['--no-sandbox', '--disable-dev-shm-usage']
 });
 const page = await browser.newPage({ viewport: { width: W, height: H } });
 await page.goto('file://' + resolve(here, 'frame.html'));
@@ -56,9 +65,10 @@ await page.evaluate(([w, h, total]) => window.setup(w, h, total), [W, H, TOTAL])
 
 const enc = spawn(ffmpeg, [
   '-y',
-  '-f', 'image2pipe', '-framerate', String(FPS), '-i', 'pipe:0',
+  // The bundled ffmpeg cannot probe a raw JPEG pipe, so name the decoder.
+  '-f', 'image2pipe', '-vcodec', 'mjpeg', '-framerate', String(FPS), '-i', 'pipe:0',
   '-c:v', 'libvpx',
-  '-b:v', '2600k', '-crf', '31',
+  '-b:v', '2400k',
   '-g', '1',                 // every frame a keyframe — seek anywhere, instantly
   '-deadline', 'good', '-cpu-used', '2',
   '-an',

@@ -82,7 +82,16 @@
       videoReady = true;
       video.pause();
     });
+    /* Scrubbing is seeking. If the host does not serve HTTP Range requests the
+       browser reports an empty seekable range and every currentTime assignment
+       is silently ignored — so render the storm live instead of freezing. */
+    video.addEventListener('canplay', function () {
+      if (!video.seekable.length) useCanvasFallback();
+    });
     video.addEventListener('error', useCanvasFallback);
+    if (video.readyState >= 1 && isFinite(video.duration) && video.duration > 0) {
+      videoReady = true;
+    }
     /* Warm the decoder: a muted play/pause makes the first seek land clean. */
     var warm = video.play();
     if (warm && warm.then) warm.then(function () { video.pause(); }, function () {});
@@ -142,12 +151,17 @@
   function pad(n) { return (n < 10 ? '0' : '') + n; }
 
   var lastAct = -1;
-  function updateHud(t, s, page, zone) {
+  function updateHud(t, s, page, zone, tail) {
     hud.style.setProperty('--hud-progress', page.toFixed(4));
 
-    var wind = Math.round(lerp(6, 88, s.intensity));
-    var temp = -Math.round(lerp(9, 26, s.intensity));
-    var mins = Math.round(lerp(902, 1040, t));   /* 15:02 -> 17:20, light going */
+    /* Past the hero the weather keeps easing off, so the readout still
+       agrees with the copy: by the closing act the storm has stopped. */
+    var weather = zone === 'hero' ? s.intensity : lerp(0.26, 0.01, tail);
+    var wind = Math.round(lerp(6, 88, weather));
+    var temp = -Math.round(lerp(9, 26, weather));
+    var mins = Math.round(zone === 'hero'
+      ? lerp(902, 1040, t)
+      : lerp(1040, 1071, tail));                 /* 15:02 -> 17:51, light gone */
 
     readouts.wind.textContent = wind + ' km/h';
     readouts.temp.textContent = '−' + Math.abs(temp) + '°';
@@ -167,6 +181,13 @@
 
   var rangeEl = document.getElementById('range');
   var closeEl = document.getElementById('close');
+
+  function tailProgress() {
+    var run = document.documentElement.scrollHeight - window.innerHeight;
+    var heroRun = hero.offsetHeight - window.innerHeight;
+    if (run <= heroRun) return 0;
+    return clamp((window.scrollY - heroRun) / (run - heroRun), 0, 1);
+  }
 
   function zoneAt() {
     var mid = window.innerHeight * 0.5;
@@ -193,7 +214,7 @@
 
     scrubVideo(t, dt);
     updateCues(t);
-    updateHud(t, s, page, zone);
+    updateHud(t, s, page, zone, tailProgress());
 
     /* Theatre iris: a tight pool of light on the cold open, wide for the
        weather, then closing hard as attention narrows onto the kit. */
@@ -220,7 +241,9 @@
      ------------------------------------------------------------------------ */
 
   if (closeCanvas && !reduced.matches) {
-    closeStorm = K.createStorm(closeCanvas, { seed: 0x51e, density: 0.45 });
+    closeStorm = K.createStorm(closeCanvas, {
+      seed: 0x51e, density: 0.45, sky: false, ground: false
+    });
     closeStorm.fit(1.5);
     new IntersectionObserver(function (entries) {
       closeVisible = entries[0].isIntersecting;

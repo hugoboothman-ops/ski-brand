@@ -195,7 +195,7 @@ body {
   position: absolute;
   inset: -20%;
   pointer-events: none;
-  opacity: 0.035;
+  opacity: 0.03;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -215,6 +215,7 @@ body {
   align-self: center;
   max-width: min(52ch, 100%);
 }
+.cue--left  { max-width: min(60rem, 100%); }
 .cue--quote { justify-self: end; text-align: right; max-width: min(30ch, 100%); }
 .cue--open  { justify-self: center; text-align: center; }
 
