@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KALTHAUS — Alpine outerwear, Winter 01</title>
+<meta name="description" content="KALTHAUS makes alpine outerwear for the hours after the mountain empties. Winter 01 releases in October.">
+<meta name="theme-color" content="#050607">
+<meta name="color-scheme" content="dark">
+
+<meta property="og:title" content="KALTHAUS — Alpine outerwear, Winter 01">
+<meta property="og:description" content="Alpine outerwear for the hours after the mountain empties.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@300;400;500&family=Newsreader:ital,opsz,wght@1,6..72,200..500&display=swap">
+<link rel="stylesheet" href="assets/css/styles.css">
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body>
+
+<a class="skip" href="#range">Skip to Winter 01</a>
+
+<!-- ===================================================================
+     HERO — scroll-scrubbed video.
+     Scroll position drives video.currentTime. Overlay copy is cued to
+     normalised timeline positions via data-in / data-out on .cue
+     elements (0 = first frame, 1 = last frame).
+     Swap the placeholder by replacing the <source> files. See README.
+     =================================================================== -->
+<section class="hero" id="hero" aria-labelledby="hero-title">
+  <div class="hero__stage">
+
+    <video class="hero__video" id="hero-video"
+           playsinline muted preload="auto" disablepictureinpicture
+           poster="assets/video/hero-poster.jpg" aria-hidden="true">
+      <!-- Final footage: supply H.264 MP4 first, WebM second. -->
+      <source src="assets/video/hero-placeholder.webm" type="video/webm">
+    </video>
+
+    <!-- Fallback storm: drawn only if the video cannot decode. -->
+    <canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas>
+
+    <div class="hero__iris" aria-hidden="true"></div>
+    <div class="hero__grain" aria-hidden="true"></div>
+
+    <div class="hero__overlay">
+
+      <!-- ACT 0 — cold open -->
+      <div class="cue cue--open" data-in="0" data-out="0.10">
+        <h1 class="wordmark" id="hero-title">Kalthaus</h1>
+        <p class="wordmark__sub">Alpine outerwear &middot; Winter 01</p>
+      </div>
+
+      <!-- ACT I — environment -->
+      <div class="cue cue--left" data-in="0.13" data-out="0.34">
+        <p class="eyebrow">Act I &mdash; Environment</p>
+        <h2 class="display"><span>First,</span><span>the weather.</span></h2>
+        <p class="lede">At 2,940 metres the light lasts three hours and the wind
+        writes the schedule. The lifts stop. The pistes empty. What is left is
+        weather, and the few people who came for it.</p>
+      </div>
+
+      <!-- ACT II — arrival -->
+      <div class="cue cue--left" data-in="0.40" data-out="0.63">
+        <p class="eyebrow">Act II &mdash; Arrival</p>
+        <h2 class="display"><span>Then,</span><span>someone stayed.</span></h2>
+      </div>
+
+      <div class="cue cue--quote" data-in="0.47" data-out="0.63">
+        <p class="quote">Everything on this mountain is moving.<br>One thing is not.</p>
+        <p class="stamp">Observed 16:41 &middot; north face</p>
+      </div>
+
+      <!-- ACT III — reveal -->
+      <div class="cue cue--left" data-in="0.70" data-out="0.94">
+        <p class="eyebrow">Act III &mdash; Reveal</p>
+        <h2 class="display"><span>Only then,</span><span>the kit.</span></h2>
+        <p class="lede">Nothing here is styling. Every seam is an answer to a
+        specific hour of weather &mdash; the hour after the light goes, when the
+        wind turns and the mountain belongs to whoever dressed for it.</p>
+      </div>
+
+    </div>
+
+    <p class="scrollcue" aria-hidden="true"><span>Scroll</span></p>
+  </div>
+</section>
+
+<main>
+
+<!-- ACT IV — product -->
+<section class="act range" id="range" aria-labelledby="range-title">
+  <header class="range__head" data-reveal>
+    <p class="eyebrow">Act IV &mdash; Winter 01</p>
+    <h2 class="display display--mid" id="range-title"><span>The blackout</span><span>range.</span></h2>
+    <p class="lede">Three layers and three topsheets. Built for one mountain,
+    in one colour, for the part of the day nobody photographs.</p>
+  </header>
+
+  <ol class="rack rack--jackets">
+    <li class="piece" data-reveal style="--d:0">
+      <div class="slot slot--jacket" data-slot="jacket" data-src="">
+        <span class="slot__label">Image slot &middot; jacket &middot; 3:4</span>
+      </div>
+      <div class="piece__meta">
+        <h3 class="piece__name">Whiteout Shell</h3>
+        <p class="piece__spec">3L recycled nylon &middot; fully taped &middot; 20k/20k</p>
+        <p class="piece__price">&pound;480</p>
+      </div>
+    </li>
+    <li class="piece" data-reveal style="--d:1">
+      <div class="slot slot--jacket" data-slot="jacket" data-src="">
+        <span class="slot__label">Image slot &middot; jacket &middot; 3:4</span>
+      </div>
+      <div class="piece__meta">
+        <h3 class="piece__name">Leeward Parka</h3>
+        <p class="piece__spec">800fp recycled down &middot; wind-sealed hood</p>
+        <p class="piece__price">&pound;620</p>
+      </div>
+    </li>
+    <li class="piece" data-reveal style="--d:2">
+      <div class="slot slot--jacket" data-slot="jacket" data-src="">
+        <span class="slot__label">Image slot &middot; jacket &middot; 3:4</span>
+      </div>
+      <div class="piece__meta">
+        <h3 class="piece__name">Hut Jacket</h3>
+        <p class="piece__spec">Boiled lambswool &middot; horn buttons &middot; alpine cut</p>
+        <p class="piece__price">&pound;340</p>
+      </div>
+    </li>
+  </ol>
+
+  <div class="rack__intro" data-reveal>
+    <p class="lede lede--narrow">Three topsheets. Screen-printed, matte,
+    no logo above the binding.</p>
+  </div>
+
+  <ol class="rack rack--skis">
+    <li class="piece piece--ski" data-reveal style="--d:0">
+      <div class="slot slot--ski" data-slot="ski" data-src="">
+        <span class="slot__label">Graphic slot &middot; topsheet</span>
+      </div>
+      <div class="piece__meta">
+        <h3 class="piece__name">Northwall</h3>
+        <p class="piece__spec">186 &middot; 108 waist</p>
+      </div>
+    </li>
+    <li class="piece piece--ski" data-reveal style="--d:1">
+      <div class="slot slot--ski" data-slot="ski" data-src="">
+        <span class="slot__label">Graphic slot &middot; topsheet</span>
+      </div>
+      <div class="piece__meta">
+        <h3 class="piece__name">Low Light</h3>
+        <p class="piece__spec">178 &middot; 96 waist</p>
+      </div>
+    </li>
+    <li class="piece piece--ski" data-reveal style="--d:2">
+      <div class="slot slot--ski" data-slot="ski" data-src="">
+        <span class="slot__label">Graphic slot &middot; topsheet</span>
+      </div>
+      <div class="piece__meta">
+        <h3 class="piece__name">Heirloom</h3>
+        <p class="piece__spec">192 &middot; 88 waist</p>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<!-- ACT V — close -->
+<section class="act close" id="close" aria-labelledby="close-title">
+  <canvas class="close__canvas" id="close-canvas" aria-hidden="true"></canvas>
+  <div class="close__inner" data-reveal>
+    <p class="eyebrow">Act V &mdash; Close</p>
+    <h2 class="display display--mid" id="close-title"><span>The storm stops.</span><span>The mountain keeps the rest.</span></h2>
+
+    <form class="signup" id="signup" novalidate>
+      <label class="signup__label" for="email">Winter 01 releases in October.</label>
+      <div class="signup__row">
+        <input class="signup__input" id="email" name="email" type="email"
+               autocomplete="email" placeholder="you@address" required>
+        <button class="signup__btn" type="submit">Join the list</button>
+      </div>
+      <p class="signup__note" id="signup-note" role="status">One message, in October. Nothing else.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <p class="foot__mark">Kalthaus</p>
+  <p class="foot__meta">Alpine outerwear &middot; Winter 01 &middot; Made for the Arlberg</p>
+</footer>
+
+<!-- Instrument readout: reports the live state of the hero simulation. -->
+<div class="hud" id="hud" aria-hidden="true">
+  <div class="hud__bar"><span class="hud__fill" id="hud-fill"></span></div>
+  <dl class="hud__fields">
+    <div class="hud__f"><dt>Alt</dt><dd id="hud-alt">2 940 m</dd></div>
+    <div class="hud__f"><dt>Temp</dt><dd id="hud-temp">&minus;9&deg;</dd></div>
+    <div class="hud__f"><dt>Wind</dt><dd id="hud-wind">6 km/h</dd></div>
+    <div class="hud__f hud__f--wide"><dt>Time</dt><dd id="hud-time">15:02</dd></div>
+    <div class="hud__f hud__f--act"><dt>Act</dt><dd id="hud-act">I &mdash; Environment</dd></div>
+  </dl>
+</div>
+
+<script src="assets/js/storm.js"></script>
+<script src="assets/js/scene.js"></script>
+</body>
+</html>

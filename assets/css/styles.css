@@ -1,0 +1,595 @@
+/* ==========================================================================
+   KALTHAUS — blackout theatre
+   Palette, type and layout tokens. One accent only: brass.
+   ========================================================================== */
+
+:root {
+  /* colour */
+  --blackout: #050607;
+  --stone:    #0d1114;
+  --bone:     #e9e5dd;
+  --slate:    #8a9299;
+  --slate-dim:#6e767d;
+  --frost:    #a8bcc6;
+  --brass:    #c39445;
+
+  /* type */
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body:    "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --serif:   "Newsreader", Georgia, "Times New Roman", serif;
+  --mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* rhythm */
+  --gut:  clamp(1.25rem, 5vw, 5.5rem);
+  --stack: clamp(4.5rem, 12vh, 10rem);
+
+  /* driven from JS */
+  --iris: 140%;
+  --hud-progress: 0;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--blackout);
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  margin: 0;
+  background: var(--blackout);
+  color: var(--bone);
+  font-family: var(--body);
+  font-variation-settings: "wdth" 100;
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--brass); color: var(--blackout); }
+
+:focus-visible {
+  outline: 1px solid var(--brass);
+  outline-offset: 4px;
+}
+
+.skip {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 90;
+  padding: 0.85rem 1.25rem;
+  transform: translateY(-120%);
+  background: var(--bone);
+  color: var(--blackout);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.skip:focus { transform: translateY(0); }
+
+/* --------------------------------------------------------------------------
+   Shared type
+   -------------------------------------------------------------------------- */
+
+.eyebrow {
+  margin: 0 0 clamp(1.1rem, 2.4vh, 2rem);
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: clamp(0.6rem, 1.1vw, 0.7rem);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--slate-dim);
+}
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 1.75rem;
+  height: 1px;
+  margin-right: 0.9rem;
+  vertical-align: 0.28em;
+  background: var(--brass);
+}
+
+.display {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 600;
+  font-variation-settings: "wdth" 112;
+  font-size: clamp(2.6rem, 8.4vw, 7.6rem);
+  line-height: 0.88;
+  letter-spacing: -0.018em;
+  text-transform: uppercase;
+  color: var(--bone);
+  text-wrap: balance;
+}
+.display span { display: block; }
+.display span + span { color: var(--slate); }
+
+.display--mid { font-size: clamp(2.2rem, 6.4vw, 5.4rem); }
+
+.lede {
+  margin: clamp(1.5rem, 3.5vh, 2.75rem) 0 0;
+  max-width: 44ch;
+  font-size: clamp(0.95rem, 1.15vw, 1.08rem);
+  line-height: 1.66;
+  color: var(--slate);
+}
+.lede--narrow { max-width: 32ch; }
+
+.quote {
+  margin: 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.35rem, 3vw, 2.5rem);
+  line-height: 1.24;
+  letter-spacing: 0.005em;
+  color: var(--bone);
+}
+
+.stamp {
+  margin: clamp(1rem, 2vh, 1.6rem) 0 0;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--slate-dim);
+}
+
+/* --------------------------------------------------------------------------
+   Hero — pinned stage, scrubbed video
+   -------------------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  /* Scroll distance = scrub length. 620vh gives the sequence room to breathe. */
+  height: 620vh;
+}
+
+.hero__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--blackout);
+}
+
+.hero__video,
+.hero__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero__canvas { opacity: 0; }
+.hero__stage[data-source="canvas"] .hero__video { visibility: hidden; }
+.hero__stage[data-source="canvas"] .hero__canvas { opacity: 1; }
+
+/* Iris: attention narrows as Act III closes in. */
+.hero__iris {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse var(--iris) var(--iris) at 50% 46%,
+    transparent 34%,
+    rgba(5, 6, 7, 0.62) 72%,
+    rgba(5, 6, 7, 0.96) 100%
+  );
+  transition: background 120ms linear;
+}
+
+.hero__grain {
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  padding: clamp(4.5rem, 10vh, 8rem) var(--gut);
+  pointer-events: none;
+}
+
+/* Cues stack in the same grid cell; only the active one is visible. */
+.cue {
+  grid-area: 1 / 1;
+  align-self: center;
+  max-width: min(52ch, 100%);
+}
+.cue--quote { justify-self: end; text-align: right; max-width: min(30ch, 100%); }
+.cue--open  { justify-self: center; text-align: center; }
+
+/* Cues fade rather than unmount: the narrative copy stays in the
+   accessibility tree at every scroll position. */
+.js .cue {
+  opacity: 0;
+  transform: translateY(1.4rem);
+  filter: blur(7px);
+  transition:
+    opacity 700ms cubic-bezier(.2,.7,.2,1),
+    transform 900ms cubic-bezier(.2,.7,.2,1),
+    filter 700ms cubic-bezier(.2,.7,.2,1);
+}
+.js .cue.is-live {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+  pointer-events: auto;
+}
+
+.wordmark {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-variation-settings: "wdth" 125;
+  font-size: clamp(1.6rem, 5.6vw, 4.2rem);
+  line-height: 1;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.wordmark__sub {
+  margin: clamp(1.1rem, 2.6vh, 1.9rem) 0 0;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--slate-dim);
+  text-indent: 0.3em;
+}
+
+.scrollcue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(4.5rem, 9vh, 6.5rem);
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--slate-dim);
+  transition: opacity 500ms ease;
+}
+.scrollcue span { display: block; text-indent: 0.3em; }
+.scrollcue::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 3.25rem;
+  margin: 0.9rem auto 0;
+  background: linear-gradient(var(--brass), transparent);
+}
+.scrollcue.is-gone { opacity: 0; }
+
+/* --------------------------------------------------------------------------
+   Acts IV & V
+   -------------------------------------------------------------------------- */
+
+.act {
+  position: relative;
+  padding: var(--stack) var(--gut);
+}
+
+.range__head { max-width: 62rem; margin: 0 0 clamp(3.5rem, 9vh, 7rem); }
+
+.rack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(2rem, 4.5vw, 4.5rem) clamp(1.5rem, 3.5vw, 3.5rem);
+}
+
+.rack--jackets { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+
+.rack--skis {
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+  max-width: 44rem;
+  margin-inline: auto;
+}
+
+.rack__intro {
+  margin: clamp(5rem, 13vh, 10rem) 0 clamp(2.5rem, 6vh, 4rem);
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.rack__intro .lede { margin-top: 0; }
+
+/* Placeholder slots ------------------------------------------------------- */
+
+.slot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(233, 229, 221, 0.09);
+  background-color: var(--stone);
+  background-image: linear-gradient(178deg, #10161a 0%, #070a0c 78%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: border-color 400ms ease;
+}
+.slot--jacket { aspect-ratio: 3 / 4; }
+.slot--ski    { height: clamp(20rem, 52vh, 34rem); }
+
+/* Brass registration ticks — corner marks, print-plate style. */
+.slot::before,
+.slot::after {
+  content: "";
+  position: absolute;
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 1px solid var(--brass);
+  opacity: 0.55;
+}
+.slot::before { top: 0.6rem; left: 0.6rem; border-right: 0; border-bottom: 0; }
+.slot::after { bottom: 0.6rem; right: 0.6rem; border-left: 0; border-top: 0; }
+
+.slot__label {
+  padding: 0 1rem;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--slate-dim);
+  text-align: center;
+}
+.slot.is-filled { border-color: rgba(233, 229, 221, 0.16); }
+.slot.is-filled .slot__label { display: none; }
+
+.piece:hover .slot { border-color: rgba(233, 229, 221, 0.24); }
+
+.piece__meta { padding-top: clamp(0.9rem, 2vh, 1.35rem); }
+
+.piece__name {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 500;
+  font-variation-settings: "wdth" 118;
+  font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.piece__spec,
+.piece__price {
+  margin: 0.5rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  line-height: 1.6;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--slate-dim);
+}
+.piece__price { color: var(--slate); margin-top: 0.35rem; }
+
+.piece--ski .piece__meta { text-align: center; }
+
+/* Close ------------------------------------------------------------------- */
+
+.close {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  overflow: hidden;
+}
+
+.close__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.close__inner { position: relative; max-width: 58rem; }
+
+.signup { margin: clamp(3rem, 8vh, 5.5rem) 0 0; max-width: 30rem; }
+
+.signup__label {
+  display: block;
+  margin-bottom: 1rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.signup__row {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(233, 229, 221, 0.22);
+  transition: border-color 300ms ease;
+}
+.signup__row:focus-within { border-bottom-color: var(--brass); }
+
+.signup__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.85rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--bone);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+}
+.signup__input::placeholder { color: var(--slate-dim); }
+.signup__input:focus { outline: 0; }
+
+.signup__btn {
+  flex: 0 0 auto;
+  padding: 0.85rem 0 0.85rem 1.25rem;
+  border: 0;
+  background: transparent;
+  color: var(--brass);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 250ms ease;
+}
+.signup__btn:hover { color: var(--bone); }
+
+.signup__note {
+  margin: 1rem 0 0;
+  min-height: 1.2em;
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate-dim);
+}
+.signup__note.is-error { color: var(--brass); }
+
+/* Foot -------------------------------------------------------------------- */
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: clamp(2.5rem, 6vh, 4rem) var(--gut) clamp(6rem, 12vh, 8rem);
+  border-top: 1px solid rgba(233, 229, 221, 0.08);
+}
+
+.foot__mark {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-variation-settings: "wdth" 125;
+  font-size: 0.9rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.foot__meta {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--slate-dim);
+}
+
+/* --------------------------------------------------------------------------
+   HUD — reports live simulation state, doubles as scroll position
+   -------------------------------------------------------------------------- */
+
+.hud {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  padding: 0.7rem var(--gut) 0.85rem;
+  background: linear-gradient(transparent, rgba(5, 6, 7, 0.88) 55%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+.hud.is-live { opacity: 1; }
+
+.hud__bar {
+  height: 1px;
+  margin-bottom: 0.7rem;
+  background: rgba(233, 229, 221, 0.1);
+}
+.hud__fill {
+  display: block;
+  height: 100%;
+  width: calc(var(--hud-progress) * 100%);
+  background: var(--brass);
+}
+
+.hud__fields {
+  display: flex;
+  gap: clamp(1rem, 3vw, 2.75rem);
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.hud__f { display: flex; gap: 0.55rem; white-space: nowrap; }
+.hud__f dt { color: var(--slate-dim); }
+.hud__f dd { margin: 0; color: var(--slate); font-variant-numeric: tabular-nums; }
+.hud__f--act { margin-left: auto; }
+.hud__f--act dd { color: var(--brass); }
+
+/* --------------------------------------------------------------------------
+   Reveals for the DOM acts
+   -------------------------------------------------------------------------- */
+
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(1.75rem);
+  transition:
+    opacity 900ms cubic-bezier(.2,.7,.2,1),
+    transform 1100ms cubic-bezier(.2,.7,.2,1);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+.js [data-reveal].is-in { opacity: 1; transform: none; }
+
+/* --------------------------------------------------------------------------
+   Narrow screens
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 48rem) {
+  .display { font-variation-settings: "wdth" 96; }
+  .wordmark { font-variation-settings: "wdth" 112; letter-spacing: 0.16em; }
+  .cue--quote { justify-self: start; text-align: left; }
+  .hud__f--wide, .hud__f--act { display: none; }
+  .rack--skis { grid-template-columns: repeat(3, 1fr); }
+  .slot--ski { height: clamp(11rem, 34vh, 18rem); }
+  .slot--ski .slot__label { font-size: 0.5rem; letter-spacing: 0.14em; }
+}
+
+@media (max-width: 30rem) {
+  .slot--ski .slot__label { writing-mode: vertical-rl; }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion — hold the frame, drop the movement
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .js .cue,
+  .js [data-reveal] {
+    transition-duration: 1ms;
+    transform: none;
+    filter: none;
+  }
+  .hero__iris { transition: none; }
+  .scrollcue::after { display: none; }
+}

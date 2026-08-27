@@ -1,0 +1,41 @@
+<!doctype html>
+<!-- Offscreen render target for tools/render-placeholder.mjs.
+     Not part of the site. -->
+<html lang="en">
+<head><meta charset="utf-8"><title>frame</title>
+<style>
+  html, body { margin: 0; background: #050607; overflow: hidden; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script src="../assets/js/storm.js"></script>
+<script>
+  var canvas = document.getElementById('c');
+  var storm = null;
+  var frames = 0;
+
+  window.setup = function (w, h, total) {
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    storm = window.Kalthaus.createStorm(canvas, {
+      seed: 0x5c01d, figureX: 0.63, figureH: 0.66, baseY: 0.93, density: 1.15
+    });
+    storm.resize(w, h, 1);
+    frames = total;
+    /* Settle the field so frame 0 is already weather, not an empty sky. */
+    var warm = window.Kalthaus.storyState(0);
+    for (var i = 0; i < 120; i++) storm.step(1 / 24, warm);
+  };
+
+  /* Stepped with a fixed dt from a fixed seed, so the render is reproducible. */
+  window.renderFrame = function (i) {
+    var s = window.Kalthaus.storyState(i / (frames - 1));
+    storm.step(1 / 24, s);
+    storm.draw(s);
+    return true;
+  };
+</script>
+</body>
+</html>

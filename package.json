@@ -1,0 +1,13 @@
+{
+  "name": "kalthaus",
+  "version": "0.1.0",
+  "private": true,
+  "description": "KALTHAUS — scroll-scrubbed alpine outerwear site",
+  "scripts": {
+    "dev": "python3 -m http.server 4173",
+    "placeholder": "node tools/render-placeholder.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.49.1"
+  }
+}
