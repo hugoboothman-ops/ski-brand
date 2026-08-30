@@ -660,6 +660,19 @@ body {
    -------------------------------------------------------------------------- */
 
 @media (max-width: 48rem) {
+  /* A sideways scrim covers most of a narrow screen, dimming the whole
+     frame to protect copy that now spans it. Run it bottom-up instead, so
+     the top of the image stays clear. */
+  .hero__scrim--left,
+  .hero__scrim--right,
+  .hero__scrim--open {
+    background: linear-gradient(to top,
+      rgba(5, 6, 7, 0.93) 0%,
+      rgba(5, 6, 7, 0.88) 30%,
+      rgba(5, 6, 7, 0.52) 62%,
+      rgba(5, 6, 7, 0) 90%);
+  }
+
   .display { font-variation-settings: "wdth" 96; }
   .wordmark { font-variation-settings: "wdth" 112; letter-spacing: 0.16em; }
   .cue--quote { justify-self: start; text-align: left; }
