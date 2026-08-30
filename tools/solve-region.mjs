@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const ffmpeg = createRequire(import.meta.url)('ffmpeg-static');
 
 const EDIT = '/tmp/cut/joined.mp4';
-const FINE = 24, W = 64, H = 36, WIN = 0.5;
+const FINE = 24, W = 64, H = 36, WIN = 0.25;
 const from = Number(process.argv[2]), to = Number(process.argv[3]);
 
 function frames(file, start, dur, crop) {

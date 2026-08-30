@@ -9,7 +9,7 @@ import { readdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
 const ffmpeg = createRequire(import.meta.url)('ffmpeg-static');
 
-const FPS = 8, W = 48, H = 27;
+const FPS = Number(process.env.FPS) || 8, W = 40, H = 22;
 
 function sig(file, crop) {
   const vf = [`fps=${FPS}`, crop, `scale=${W}:${H}`, 'format=gray'].filter(Boolean).join(',');
@@ -47,7 +47,7 @@ picks.forEach((p, i) => {
 console.log('edit time      clip     source in/out    mean diff');
 for (const r of runs) {
   const dur = r.to - r.from + 1 / FPS;
-  if (dur < 0.3) continue;                       // ignore single-frame noise
+  if (dur < 0.2) continue;                       // ignore single-frame noise
   const md = r.d.reduce((a, b) => a + b, 0) / r.d.length;
   console.log(`${r.from.toFixed(2).padStart(5)}–${r.to.toFixed(2).padStart(5)}s  ` +
     `${r.name.padEnd(6)}  ${r.srcFrom.toFixed(2)}→${r.srcTo.toFixed(2)}s`.padEnd(22) +
