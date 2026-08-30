@@ -301,6 +301,7 @@
      ------------------------------------------------------------------------ */
 
   var sound = K.createSound && K.createSound();
+  K.sound = sound;
   var soundBtn = document.getElementById('sound');
   if (sound && soundBtn) {
     soundBtn.classList.add('is-ready');

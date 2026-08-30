@@ -105,82 +105,75 @@
 
 <main>
 
-<!-- ACT IV — product -->
-<section class="act range" id="range" aria-labelledby="range-title">
-  <header class="range__head" data-reveal>
-    <p class="eyebrow">Act IV &mdash; Winter 01</p>
-    <h2 class="display display--mid" id="range-title"><span>The blackout</span><span>range.</span></h2>
-    <p class="lede">Three layers and three topsheets. Built for one mountain,
-    in one colour, for the part of the day nobody photographs.</p>
+<!-- ===================================================================
+     ACT IV — the fit room.
+     One clip per look: the figure standing still, then the weather hits.
+     Swap a look by pointing data-clip / data-still at new files. See README.
+     =================================================================== -->
+<section class="act fit" id="range" aria-labelledby="fit-title">
+  <header class="fit__head" data-reveal>
+    <p class="eyebrow">Act IV &mdash; The fit room</p>
+    <h2 class="display display--mid" id="fit-title"><span>Dress it.</span><span>Then send the weather.</span></h2>
+    <p class="lede">Pick a look and put it under the conditions it was built
+    for. Nothing here is styled in a studio.</p>
   </header>
 
-  <ol class="rack rack--jackets">
-    <li class="piece" data-reveal style="--d:0">
-      <div class="slot slot--jacket" data-slot="jacket" data-src="">
-        <span class="slot__label">Image slot &middot; jacket &middot; 3:4</span>
-      </div>
-      <div class="piece__meta">
-        <h3 class="piece__name">Whiteout Shell</h3>
-        <p class="piece__spec">3L recycled nylon &middot; fully taped &middot; 20k/20k</p>
-        <p class="piece__price">&pound;480</p>
-      </div>
-    </li>
-    <li class="piece" data-reveal style="--d:1">
-      <div class="slot slot--jacket" data-slot="jacket" data-src="">
-        <span class="slot__label">Image slot &middot; jacket &middot; 3:4</span>
-      </div>
-      <div class="piece__meta">
-        <h3 class="piece__name">Leeward Parka</h3>
-        <p class="piece__spec">800fp recycled down &middot; wind-sealed hood</p>
-        <p class="piece__price">&pound;620</p>
-      </div>
-    </li>
-    <li class="piece" data-reveal style="--d:2">
-      <div class="slot slot--jacket" data-slot="jacket" data-src="">
-        <span class="slot__label">Image slot &middot; jacket &middot; 3:4</span>
-      </div>
-      <div class="piece__meta">
-        <h3 class="piece__name">Hut Jacket</h3>
-        <p class="piece__spec">Boiled lambswool &middot; horn buttons &middot; alpine cut</p>
-        <p class="piece__price">&pound;340</p>
-      </div>
-    </li>
-  </ol>
+  <div class="fit__body">
 
-  <div class="rack__intro" data-reveal>
-    <p class="lede lede--narrow">Three topsheets. Screen-printed, matte,
-    no logo above the binding.</p>
+    <div class="fit__stage">
+      <div class="fit__frame">
+        <video class="fit__video" id="fit-video" playsinline muted preload="auto"
+               disablepictureinpicture aria-hidden="true"></video>
+        <div class="fit__vignette" aria-hidden="true"></div>
+        <p class="fit__state" id="fit-state" role="status">Holding.</p>
+      </div>
+
+      <div class="fit__controls">
+        <button class="fit__go" id="fit-go" type="button">Send the weather</button>
+        <dl class="fit__conditions" aria-live="off">
+          <div><dt>Wind</dt><dd id="fit-wind">6&nbsp;km/h</dd></div>
+          <div><dt>Temp</dt><dd id="fit-temp">&minus;9&deg;</dd></div>
+          <div><dt>Load</dt><dd id="fit-load">Calm</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="fit__picker">
+      <h3 class="fit__pickerTitle">Winter 01</h3>
+      <ul class="looks" id="looks">
+        <li>
+          <button class="look" type="button" aria-pressed="true"
+                  data-clip="assets/video/looks/whiteout-shell.mp4"
+                  data-still="assets/video/looks/whiteout-shell.jpg">
+            <span class="look__name">Whiteout Shell</span>
+            <span class="look__spec">3L recycled nylon &middot; fully taped &middot; 20k/20k</span>
+            <span class="look__price">&pound;480</span>
+          </button>
+        </li>
+        <li>
+          <button class="look" type="button" aria-pressed="false"
+                  data-clip="assets/video/looks/leeward-parka.mp4"
+                  data-still="assets/video/looks/leeward-parka.jpg">
+            <span class="look__name">Leeward Parka</span>
+            <span class="look__spec">800fp recycled down &middot; wind-sealed hood</span>
+            <span class="look__price">&pound;620</span>
+          </button>
+        </li>
+        <li>
+          <button class="look" type="button" aria-pressed="false"
+                  data-clip="assets/video/looks/hut-jacket.mp4"
+                  data-still="assets/video/looks/hut-jacket.jpg">
+            <span class="look__name">Hut Jacket</span>
+            <span class="look__spec">Boiled lambswool &middot; horn buttons &middot; alpine cut</span>
+            <span class="look__price">&pound;340</span>
+          </button>
+        </li>
+      </ul>
+      <p class="fit__note">Three topsheets ship alongside. Screen-printed,
+      matte, no logo above the binding.</p>
+    </div>
+
   </div>
-
-  <ol class="rack rack--skis">
-    <li class="piece piece--ski" data-reveal style="--d:0">
-      <div class="slot slot--ski" data-slot="ski" data-src="">
-        <span class="slot__label">Graphic slot &middot; topsheet</span>
-      </div>
-      <div class="piece__meta">
-        <h3 class="piece__name">Northwall</h3>
-        <p class="piece__spec">186 &middot; 108&nbsp;waist</p>
-      </div>
-    </li>
-    <li class="piece piece--ski" data-reveal style="--d:1">
-      <div class="slot slot--ski" data-slot="ski" data-src="">
-        <span class="slot__label">Graphic slot &middot; topsheet</span>
-      </div>
-      <div class="piece__meta">
-        <h3 class="piece__name">Low Light</h3>
-        <p class="piece__spec">178 &middot; 96&nbsp;waist</p>
-      </div>
-    </li>
-    <li class="piece piece--ski" data-reveal style="--d:2">
-      <div class="slot slot--ski" data-slot="ski" data-src="">
-        <span class="slot__label">Graphic slot &middot; topsheet</span>
-      </div>
-      <div class="piece__meta">
-        <h3 class="piece__name">Heirloom</h3>
-        <p class="piece__spec">192 &middot; 88&nbsp;waist</p>
-      </div>
-    </li>
-  </ol>
 </section>
 
 <!-- ACT V — close -->
@@ -225,5 +218,6 @@
 <script src="assets/js/storm.js"></script>
 <script src="assets/js/sound.js"></script>
 <script src="assets/js/scene.js"></script>
+<script src="assets/js/fitroom.js"></script>
 </body>
 </html>

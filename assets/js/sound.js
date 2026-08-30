@@ -24,6 +24,7 @@
     var started = false;
     var on = false;
     var level = 0;
+    var external = 0;
 
     function build() {
       ctx = new Ctx();
@@ -92,9 +93,13 @@
 
       /* Called every frame with the storm intensity and whether the hero
          still owns the viewport. Sound belongs to the hero only. */
+      /* Anything outside the hero that wants the wind — the fit room's
+         weather button — drives this instead. */
+      drive: function (v) { external = Math.max(0, Math.min(1, v || 0)); },
+
       update: function (intensity, inHero) {
         if (!started || !on) return;
-        var target = inHero ? intensity : 0;
+        var target = Math.max(inHero ? intensity : 0, external);
         /* Smooth here rather than on the audio params: cheaper, and it stops
            scroll jitter turning into audible zipper noise. */
         level += (target - level) * 0.06;

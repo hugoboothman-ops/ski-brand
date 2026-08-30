@@ -63,7 +63,7 @@ The acts follow the footage's own beats, not an imposed structure:
 | II | **Reveal** | `0.17–0.28` | Camera pulls back; skis, shell, poles |
 | III | **Environment** | `0.38–0.60` | Ground cuts to black, snow lets go |
 | — | Pull quote | `0.66–0.88` | Stillness against chaos |
-| IV | **Product** | `#range` | Winter 01 |
+| IV | **The fit room** | `#range` | Pick a look, send weather at it |
 | V | **Close** | `#close` | The storm stops |
 
 Product is a consequence of the environment, not a shop front: the kit is only
@@ -166,23 +166,44 @@ Sound belongs to the hero. Past it the mix falls to silence.
 Tuning is in `assets/js/sound.js`: `windGain` and `subGain` set the balance,
 the LFO frequency and depth set how often it gusts.
 
-## Product slots
+## The fit room
 
-Every placeholder is a `.slot` with an empty `data-src`. Fill one by pointing
-it at an image:
+The main event: pick a look, then put it under the conditions it was built
+for. Selecting a look holds it on frame one; **Send the weather** plays its
+clip through once, and it settles on the aftermath rather than resetting —
+seeing the garment after the hit is the whole point.
+
+**One clip per look.** Each is the same shot: the figure standing still, the
+load arriving, then it clearing. Adding or swapping a look means editing two
+attributes — no code:
 
 ```html
-<div class="slot slot--jacket" data-slot="jacket" data-src="assets/img/whiteout-shell.jpg">
+<button class="look" type="button" aria-pressed="false"
+        data-clip="assets/video/looks/leeward-parka.mp4"
+        data-still="assets/video/looks/leeward-parka.jpg">
 ```
 
-The script sets the background and hides the placeholder label. Slots are
-sized to their subject: jackets are 3:4 portrait, ski topsheets are tall
-verticals racked in threes.
+| | |
+|---|---|
+| `data-clip` | The look's clip. Roughly 5s: hold, hit, settle |
+| `data-still` | Poster frame, shown before playback and while loading |
 
-| Slot | Count | Ratio |
-|---|---|---|
-| `slot--jacket` | 3 | 3:4 |
-| `slot--ski` | 3 | tall vertical |
+The clips in `assets/video/looks/` are **placeholders cut from the hero
+footage** so the interaction can be felt before real ones exist. They are
+deliberately small; real ones can be heavier.
+
+Unlike the hero these are played, not scrubbed, so they do **not** need
+all-keyframe encoding — a normal encode is smaller and looks better:
+
+```sh
+ffmpeg -i look.mov -an -c:v libx264 -crf 23 -preset slow \
+       -pix_fmt yuv420p -movflags +faststart assets/video/looks/<name>.mp4
+ffmpeg -i look.mov -frames:v 1 -q:v 4 assets/video/looks/<name>.jpg
+```
+
+The readout beside the button climbs with the clip's own playhead rather
+than on a timer, so the numbers always agree with the picture. If the sound
+is on, the wind swells with it.
 
 ## Regenerating the placeholder
 

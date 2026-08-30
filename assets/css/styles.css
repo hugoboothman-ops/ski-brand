@@ -338,104 +338,155 @@ body {
   padding: var(--stack) var(--gut-r) var(--stack) var(--gut-l);
 }
 
-.range__head { max-width: 68rem; margin: 0 0 clamp(3.5rem, 9vh, 7rem); }
+.fit__head { max-width: 68rem; margin: 0 0 clamp(3rem, 7vh, 5.5rem); }
 
-.rack {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.fit__body {
   display: grid;
-  gap: clamp(2rem, 4.5vw, 4.5rem) clamp(1.5rem, 3.5vw, 3.5rem);
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 4.5rem);
+  align-items: start;
 }
 
-.rack--jackets { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+/* Stage --------------------------------------------------------------- */
 
-.rack--skis {
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(1rem, 2.5vw, 2.5rem);
-  max-width: 44rem;
-  margin-inline: auto;
-}
-
-.rack__intro {
-  margin: clamp(5rem, 13vh, 10rem) 0 clamp(2.5rem, 6vh, 4rem);
-  display: flex;
-  justify-content: center;
-  text-align: center;
-}
-.rack__intro .lede { margin-top: 0; }
-
-/* Placeholder slots ------------------------------------------------------- */
-
-.slot {
+.fit__frame {
   position: relative;
-  display: grid;
-  place-items: center;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
   border: 1px solid rgba(233, 229, 221, 0.09);
-  background-color: var(--stone);
-  background-image: linear-gradient(178deg, #10161a 0%, #070a0c 78%);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: border-color 400ms ease;
+  background: var(--stone);
 }
-.slot--jacket { aspect-ratio: 3 / 4; }
-.slot--ski    { height: clamp(20rem, 52vh, 34rem); }
 
-/* Brass registration ticks — corner marks, print-plate style. */
-.slot::before,
-.slot::after {
-  content: "";
+.fit__video {
   position: absolute;
-  width: 0.7rem;
-  height: 0.7rem;
-  border: 1px solid var(--brass);
-  opacity: 0.55;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
-.slot::before { top: 0.6rem; left: 0.6rem; border-right: 0; border-bottom: 0; }
-.slot::after { bottom: 0.6rem; right: 0.6rem; border-left: 0; border-top: 0; }
 
-.slot__label {
-  padding: 0 1rem;
+.fit__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 82% 78% at 50% 45%,
+    transparent 42%, rgba(5, 6, 7, 0.72) 100%);
+}
+
+.fit__state {
+  position: absolute;
+  left: clamp(0.85rem, 2vw, 1.4rem);
+  bottom: clamp(0.7rem, 1.8vh, 1.1rem);
+  margin: 0;
   font-family: var(--mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.22em;
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.fit__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem clamp(1.25rem, 3vw, 2.5rem);
+  align-items: center;
+  padding-top: clamp(1.1rem, 2.5vh, 1.75rem);
+}
+
+.fit__go {
+  padding: 0.95rem 1.9rem;
+  border: 1px solid var(--brass);
+  background: transparent;
+  color: var(--brass);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 250ms ease, color 250ms ease, opacity 250ms ease;
+}
+.fit__go:hover:not(:disabled) { background: var(--brass); color: var(--blackout); }
+.fit__go:disabled { opacity: 0.45; cursor: default; }
+
+.fit__conditions {
+  display: flex;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.fit__conditions > div { display: flex; gap: 0.5rem; white-space: nowrap; }
+.fit__conditions dt { color: var(--slate-dim); }
+.fit__conditions dd { margin: 0; color: var(--slate); font-variant-numeric: tabular-nums; }
+.is-blasting .fit__conditions dd { color: var(--bone); }
+
+/* Picker -------------------------------------------------------------- */
+
+.fit__pickerTitle {
+  margin: 0 0 1.25rem;
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--slate-dim);
-  text-align: center;
 }
-.slot.is-filled { border-color: rgba(233, 229, 221, 0.16); }
-.slot.is-filled .slot__label { display: none; }
 
-.piece:hover .slot { border-color: rgba(233, 229, 221, 0.24); }
+.looks { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
 
-.piece__meta { padding-top: clamp(0.9rem, 2vh, 1.35rem); }
+.look {
+  width: 100%;
+  display: grid;
+  gap: 0.4rem;
+  padding: clamp(1rem, 2.2vh, 1.4rem) 0;
+  border: 0;
+  border-top: 1px solid rgba(233, 229, 221, 0.1);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: opacity 250ms ease;
+}
+.looks li:last-child .look { border-bottom: 1px solid rgba(233, 229, 221, 0.1); }
+.look:hover { opacity: 1; }
+.look[aria-pressed="false"] { opacity: 0.42; }
+.look[aria-pressed="false"]:hover { opacity: 0.72; }
 
-.piece__name {
-  margin: 0;
+.look__name {
   font-family: var(--display);
   font-weight: 500;
   font-variation-settings: "wdth" 118;
-  font-size: clamp(0.95rem, 1.5vw, 1.2rem);
-  letter-spacing: 0.08em;
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--bone);
 }
+.look[aria-pressed="true"] .look__name { color: var(--brass); }
 
-.piece__spec,
-.piece__price {
-  margin: 0.5rem 0 0;
+.look__spec, .look__price {
   font-family: var(--mono);
-  font-size: 0.66rem;
+  font-size: 0.62rem;
   line-height: 1.6;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--slate-dim);
-  font-variant-numeric: tabular-nums;
 }
-.piece__price { color: var(--slate); margin-top: 0.35rem; }
+.look__price { color: var(--slate); }
 
-.piece--ski .piece__meta { text-align: center; }
+.fit__note {
+  margin: clamp(1.75rem, 4vh, 2.75rem) 0 0;
+  max-width: 30ch;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--slate-dim);
+}
+
+@media (max-width: 60rem) {
+  .fit__body { grid-template-columns: minmax(0, 1fr); }
+  .fit__picker { padding-top: clamp(1.5rem, 4vh, 3rem); }
+}
 
 /* Close ------------------------------------------------------------------- */
 

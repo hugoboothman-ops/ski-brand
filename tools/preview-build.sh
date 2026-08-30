@@ -6,5 +6,7 @@
 cd "$(dirname "$0")/.."
 sed -e 's#<link rel="stylesheet" href="https://fonts.googleapis.com[^"]*">#<link rel="stylesheet" href="/tools/fonts/local.css">#' \
     -e 's#<source src="assets/video/hero.mp4" type="video/mp4">#<source src="assets/video/hero-verify.webm" type="video/webm">#' \
+    -e 's#\(assets/video/looks/[a-z-]*\)\.mp4#\1.verify.webm#g' \
+    -e 's#type="video/mp4"#type="video/webm"#g' \
     index.html > index-fonttest.html
 echo "index-fonttest.html rebuilt"
