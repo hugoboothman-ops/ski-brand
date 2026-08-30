@@ -18,9 +18,17 @@ const html = read('index.html');
 const css = read('assets/css/styles.css');
 const storm = read('assets/js/storm.js');
 const sound = read('assets/js/sound.js');
+const fitroom = read('assets/js/fitroom.js');
 const scene = read('assets/js/scene.js');
 
 const video = `data:video/mp4;base64,${b64('assets/video/hero-embed.mp4')}`;
+
+/* Look clips and posters, inlined so the fit room works standalone. Read out
+   of the markup rather than listed here, so a look added to index.html cannot
+   be silently missed by this build. */
+const assets = [...new Set(
+  [...html.matchAll(/data-(?:clip|still)="([^"]+)"/g)].map((m) => m[1])
+)];
 const poster = `data:image/jpeg;base64,${b64('assets/video/hero-poster.jpg')}`;
 
 const FONTS = 'https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@300;400;500&family=Newsreader:ital,opsz,wght@1,6..72,200..500&display=swap';
@@ -31,6 +39,14 @@ body = body
   .replace(/\n<script src="assets\/js\/[^"]+"><\/script>/g, '')
   .replace('src="assets/video/hero.mp4"', `src="${video}"`)
   .replace('poster="assets/video/hero-poster.jpg"', `poster="${poster}"`);
+
+const MIME = { '.mp4': 'video/mp4', '.webm': 'video/webm', '.jpg': 'image/jpeg', '.png': 'image/png' };
+for (const path of assets) {
+  const ext = path.slice(path.lastIndexOf('.'));
+  if (!MIME[ext]) throw new Error(`Unknown asset type for ${path}`);
+  body = body.split(path).join(`data:${MIME[ext]};base64,${b64(path)}`);
+}
+console.log(`inlined ${assets.length} look assets`);
 
 const out = `<title>Kalthaus</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,6 +64,9 @@ ${storm}
 </script>
 <script>
 ${sound}
+</script>
+<script>
+${fitroom}
 </script>
 <script>
 ${scene}
