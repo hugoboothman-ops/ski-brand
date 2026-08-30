@@ -24,9 +24,10 @@
   --gut-r: max(var(--gut), env(safe-area-inset-right));
   --stack: clamp(4.5rem, 12vh, 10rem);
 
-  /* Footage is panned in slightly so the frame edges never show.
-     1 shows the delivered frame exactly; raise it to crop tighter. */
-  --hero-zoom: 1.12;
+  /* 1 shows the delivered frame exactly, which is also the sharpest it can
+     be: the master is 720p and cover already upscales it. Raise this only
+     for composition — it cannot reach a frame drawn outside the page. */
+  --hero-zoom: 1;
 
   /* driven from JS */
   --iris: 140%;

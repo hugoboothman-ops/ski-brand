@@ -94,6 +94,13 @@ all-keyframe WebM of the same edit came to 16 MB against the MP4's 12 MB —
 weight for an audience that does not exist. Add a WebM source only if
 analytics turn one up.
 
+A white frame around the page is not the page. Measured at four viewport
+sizes, the outermost rendered row and column match the rows 3, 6 and 12px
+inside them — the page paints its own ground right to its edge. A border
+seen around it belongs to whatever is displaying it, and nothing inside a
+document can paint over the frame around that document. Scaling the hero
+does not reach it; open the page on its own URL instead.
+
 **The master is 1280×720, and that is the quality ceiling.** `object-fit:
 cover` plus the pan scales it about 1.3× on a 1440-wide window, and roughly
 2.6× on a retina screen. Most of the softness is that upscale, not the
@@ -125,7 +132,7 @@ Two knobs in the stylesheet:
 | | |
 |---|---|
 | `.hero { height }` | Scroll length. 820vh paces 25.7s at ~300px of scroll per second |
-| `--hero-zoom` | How far the footage is panned in. `1` shows the delivered frame exactly; `1.06` crops the edges |
+| `--hero-zoom` | How far the footage is panned in. `1` shows the delivered frame exactly, and is sharpest — the master is 720p and `cover` already upscales it. Raise only for composition |
 
 ### Re-timing the copy
 
