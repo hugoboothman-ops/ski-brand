@@ -166,33 +166,48 @@ Sound belongs to the hero. Past it the mix falls to silence.
 Tuning is in `assets/js/sound.js`: `windGain` and `subGain` set the balance,
 the LFO frequency and depth set how often it gusts.
 
-## The fit room
+## Adding a look
 
-The main event: pick a look, then put it under the conditions it was built
-for. Selecting a look holds it on frame one; **Send the weather** plays its
-clip through once, and it settles on the aftermath rather than resetting —
-seeing the garment after the hit is the whole point.
-
-**One clip per look.** Each is the same shot: the figure standing still, the
-load arriving, then it clearing. Adding or swapping a look means editing two
-attributes — no code:
+Everything about a look lives in one `<li>` in `index.html`. Copy this block,
+change four things, done — no code to touch:
 
 ```html
-<button class="look" type="button" aria-pressed="false"
-        data-clip="assets/video/looks/leeward-parka.mp4"
-        data-still="assets/video/looks/leeward-parka.jpg">
+<li>
+  <button class="look" type="button" aria-pressed="false"
+          data-clip="assets/video/looks/leeward-parka.mp4"
+          data-still="assets/video/looks/leeward-parka.jpg">
+    <span class="look__name">Leeward Parka</span>
+    <span class="look__spec">800fp recycled down &middot; wind-sealed hood</span>
+    <span class="look__price">&pound;620</span>
+  </button>
+</li>
 ```
 
-| | |
-|---|---|
-| `data-clip` | The look's clip. Roughly 5s: hold, hit, settle |
-| `data-still` | Poster frame, shown before playback and while loading |
+Only the first look in the list carries `aria-pressed="true"` — it is the one
+selected on load.
 
-The clips in `assets/video/looks/` are **placeholders cut from the hero
-footage** so the interaction can be felt before real ones exist. They are
-deliberately small; real ones can be heavier.
+**A look can exist before its footage does.** Leave `data-clip` empty and the
+frame shows a labelled slot, the button reads "Awaiting footage" and does
+nothing. Nothing breaks and nothing errors, so the range can be laid out
+before a single clip is shot. The fourth entry ships that way on purpose;
+delete it or fill it in.
 
-Unlike the hero these are played, not scrubbed, so they do **not** need
+The list is a plain vertical stack, so any number of looks works.
+
+### What to shoot
+
+One clip per look, all the same shot:
+
+> The figure holds still &rarr; the load hits &rarr; it clears
+
+About five seconds, 3:2, matching the hero's framing. This is exactly the
+shape of the existing hero footage, so the same prompt structure produces it.
+
+The clips in `assets/video/looks/` are placeholders cut from the hero footage
+so the interaction can be judged before real ones exist. They are small on
+purpose; real ones can be heavier.
+
+These are **played, not scrubbed**, so unlike the hero they do not need
 all-keyframe encoding — a normal encode is smaller and looks better:
 
 ```sh
@@ -201,9 +216,26 @@ ffmpeg -i look.mov -an -c:v libx264 -crf 23 -preset slow \
 ffmpeg -i look.mov -frames:v 1 -q:v 4 assets/video/looks/<name>.jpg
 ```
 
-The readout beside the button climbs with the clip's own playhead rather
-than on a timer, so the numbers always agree with the picture. If the sound
-is on, the wind swells with it.
+### How it behaves
+
+Selecting a look holds it on frame one. **Send the weather** plays the clip
+through once and settles on the aftermath rather than resetting — seeing the
+garment after the hit is the point of the exercise.
+
+The conditions readout climbs off the clip's own playhead rather than a timer
+of its own, so it can never drift out of step with the picture. With sound on,
+the wind swells with it.
+
+## Filling a topsheet slot
+
+Point `data-src` at an image:
+
+```html
+<div class="slot" data-src="assets/img/northwall.jpg"><span class="slot__label">Graphic slot</span></div>
+```
+
+The script sets the background and hides the label. Tall verticals, racked in
+threes.
 
 ## Regenerating the placeholder
 

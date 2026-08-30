@@ -121,10 +121,14 @@
   <div class="fit__body">
 
     <div class="fit__stage">
-      <div class="fit__frame">
+      <div class="fit__frame" id="fit-frame">
         <video class="fit__video" id="fit-video" playsinline muted preload="auto"
                disablepictureinpicture aria-hidden="true"></video>
         <div class="fit__vignette" aria-hidden="true"></div>
+        <!-- Stands in until a look has footage. See README, "Adding a look". -->
+        <div class="fit__slot" id="fit-slot" aria-hidden="true">
+          <span class="fit__slotLabel">Clip slot &middot; 3:2 &middot; ~5s<br>hold &middot; hit &middot; clear</span>
+        </div>
         <p class="fit__state" id="fit-state" role="status">Holding.</p>
       </div>
 
@@ -168,12 +172,45 @@
             <span class="look__price">&pound;340</span>
           </button>
         </li>
+        <li>
+          <button class="look" type="button" aria-pressed="false"
+                  data-clip="" data-still="">
+            <span class="look__name">Fourth piece</span>
+            <span class="look__spec">Awaiting footage &middot; delete this block or fill it in</span>
+            <span class="look__price">&mdash;</span>
+          </button>
+        </li>
       </ul>
-      <p class="fit__note">Three topsheets ship alongside. Screen-printed,
-      matte, no logo above the binding.</p>
     </div>
 
   </div>
+</section>
+
+<!-- Topsheets. Fill a slot by pointing data-src at an image. -->
+<section class="act topsheets" aria-labelledby="topsheets-title">
+  <header class="topsheets__head" data-reveal>
+    <p class="eyebrow">Winter 01 &mdash; topsheets</p>
+    <h3 class="display display--mid" id="topsheets-title">Three graphics.</h3>
+    <p class="lede lede--narrow">Screen-printed, matte, no logo above the
+    binding.</p>
+  </header>
+  <ol class="rack">
+    <li class="ski" data-reveal style="--d:0">
+      <div class="slot" data-src=""><span class="slot__label">Graphic slot</span></div>
+      <h4 class="ski__name">Northwall</h4>
+      <p class="ski__spec">186 &middot; 108&nbsp;waist</p>
+    </li>
+    <li class="ski" data-reveal style="--d:1">
+      <div class="slot" data-src=""><span class="slot__label">Graphic slot</span></div>
+      <h4 class="ski__name">Low Light</h4>
+      <p class="ski__spec">178 &middot; 96&nbsp;waist</p>
+    </li>
+    <li class="ski" data-reveal style="--d:2">
+      <div class="slot" data-src=""><span class="slot__label">Graphic slot</span></div>
+      <h4 class="ski__name">Heirloom</h4>
+      <p class="ski__spec">192 &middot; 88&nbsp;waist</p>
+    </li>
+  </ol>
 </section>
 
 <!-- ACT V — close -->

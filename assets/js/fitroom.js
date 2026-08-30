@@ -23,14 +23,31 @@
     load: document.getElementById('fit-load')
   };
 
+  var frame = document.getElementById('fit-frame');
   var looks = [].slice.call(list.querySelectorAll('.look'));
   var current = null;
   var running = false;
+  var empty = false;
 
   function select(btn) {
     if (btn === current) return;
     current = btn;
     looks.forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+
+    /* A look can be listed before its footage exists. That is a slot waiting
+       to be filled, not a failure — say so and leave the rest alone. */
+    empty = !(btn.dataset.clip || '').trim();
+    frame.classList.toggle('is-empty', empty);
+    if (empty) {
+      video.removeAttribute('src');
+      video.removeAttribute('poster');
+      video.load();
+      go.disabled = true;
+      go.textContent = 'Awaiting footage';
+      state.textContent = 'No clip yet.';
+      readouts.load.textContent = '\u2014';
+      return;
+    }
 
     video.poster = btn.dataset.still || '';
     video.src = btn.dataset.clip;
@@ -52,7 +69,7 @@
   }
 
   function blast() {
-    if (running) return;
+    if (running || empty) return;
 
     /* Reduced motion: step to the settled frame instead of playing there. */
     if (reduced.matches) {
@@ -101,6 +118,7 @@
   });
 
   video.addEventListener('error', function () {
+    if (empty) return;                 /* no source is not a broken source */
     state.textContent = 'That clip did not load.';
     go.disabled = true;
   });
