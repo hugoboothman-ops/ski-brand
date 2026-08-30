@@ -5,6 +5,9 @@ tools/preview/
 tools/fonts/
 tools/artifact-preview.html
 tools/kalthaus-artifact.html
-assets/video/hero-light.webm
-assets/video/hero-verify.webm
+
+# Local-only derivatives of assets/video/hero.mp4, rebuilt by
+# `npm run derivatives`. Never shipped — see tools/make-derivatives.mjs.
 index-fonttest.html
+assets/video/hero-verify.webm
+assets/video/hero-embed.mp4

@@ -9,8 +9,14 @@ at runtime.
 
 ```
 npm install
-npm run dev     # serve at http://localhost:4173
+npm run dev          # serve at http://localhost:4173
+npm run preview      # local preview copy, see below
+npm run derivatives  # rebuild the local-only video copies
+npm run artifact     # bundle to one self-contained HTML file
 ```
+
+Nothing is required to build the site itself — `index.html` and `assets/` are
+the whole deliverable. The scripts above are tooling.
 
 ## Hosting requirement
 
@@ -167,9 +173,17 @@ node tools/shoot-site.mjs http://localhost:4173/index-fonttest.html 0.8,1.0 390 
 **Why the preview copy exists.** The sandbox browser cannot reach
 `fonts.googleapis.com` and its Chromium is built without H.264, so screenshots
 of `index.html` silently render in fallback fonts with the hero dropped to the
-canvas fallback. `tools/preview-build.sh` writes `index-fonttest.html` with
-self-hosted fonts and a VP9 copy of the hero substituted in. Neither
-substitution ships; both exist so what you review is what users get.
+canvas fallback — wrong twice over, with no error. `npm run preview` writes
+`index-fonttest.html` with self-hosted fonts and a VP9 copy of the hero
+substituted in, so what you review is what users get.
+
+Both video substitutes are local-only and gitignored. `npm run derivatives`
+rebuilds them from `assets/video/hero.mp4`:
+
+| File | Why |
+|---|---|
+| `hero-verify.webm` | VP9, so the sandbox Chromium can decode it |
+| `hero-embed.mp4` | 960×540, small enough to inline as a data URI in the artifact bundle |
 
 `tools/preview-frames.mjs` renders single frames across the timeline into
 `tools/preview/` for checking the look without a full encode:

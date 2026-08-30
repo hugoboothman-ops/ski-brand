@@ -5,12 +5,13 @@
   "description": "KALTHAUS — scroll-scrubbed alpine outerwear site",
   "scripts": {
     "dev": "node tools/serve.mjs",
-    "placeholder": "node tools/render-placeholder.mjs"
+    "preview": "./tools/preview-build.sh",
+    "derivatives": "node tools/make-derivatives.mjs",
+    "placeholder": "node tools/render-placeholder.mjs",
+    "artifact": "npm run derivatives && node tools/build-artifact.mjs"
   },
   "devDependencies": {
+    "ffmpeg-static": "^5.2.0",
     "playwright-core": "^1.49.1"
-  },
-  "dependencies": {
-    "ffmpeg-static": "^5.2.0"
   }
 }

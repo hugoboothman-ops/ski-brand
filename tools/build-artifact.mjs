@@ -19,7 +19,7 @@ const css = read('assets/css/styles.css');
 const storm = read('assets/js/storm.js');
 const scene = read('assets/js/scene.js');
 
-const video = `data:video/webm;base64,${b64('assets/video/hero-light.webm')}`;
+const video = `data:video/mp4;base64,${b64('assets/video/hero-embed.mp4')}`;
 const poster = `data:image/jpeg;base64,${b64('assets/video/hero-poster.jpg')}`;
 
 const FONTS = 'https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@300;400;500&family=Newsreader:ital,opsz,wght@1,6..72,200..500&display=swap';
@@ -28,7 +28,7 @@ const FONTS = 'https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..12
 let body = html.slice(html.indexOf('<body>') + 6, html.lastIndexOf('</body>'));
 body = body
   .replace(/\n<script src="assets\/js\/[^"]+"><\/script>/g, '')
-  .replace('src="assets/video/hero-placeholder.webm"', `src="${video}"`)
+  .replace('src="assets/video/hero.mp4"', `src="${video}"`)
   .replace('poster="assets/video/hero-poster.jpg"', `poster="${poster}"`);
 
 const out = `<title>Kalthaus</title>
