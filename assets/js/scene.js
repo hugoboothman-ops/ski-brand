@@ -237,6 +237,11 @@
 
     scrollcue.classList.toggle('is-gone', t > 0.03);
 
+    if (sound && sound.on) {
+      sound.update(s.intensity, zone === 'hero');
+      soundBtn.style.setProperty('--level', s.intensity.toFixed(3));
+    }
+
     if (usingCanvas && heroStorm && zone === 'hero') heroStorm.frame(dt, s);
 
     if (closeStorm && closeVisible) {
@@ -294,6 +299,17 @@
   /* ------------------------------------------------------------------------
      Signup
      ------------------------------------------------------------------------ */
+
+  var sound = K.createSound && K.createSound();
+  var soundBtn = document.getElementById('sound');
+  if (sound && soundBtn) {
+    soundBtn.classList.add('is-ready');
+    soundBtn.addEventListener('click', function () {
+      soundBtn.setAttribute('aria-pressed', String(sound.toggle()));
+    });
+  } else if (soundBtn) {
+    soundBtn.remove();     /* no Web Audio, no control */
+  }
 
   var form = document.getElementById('signup');
   if (form) {

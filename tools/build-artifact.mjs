@@ -17,6 +17,7 @@ const b64 = (p) => readFileSync(resolve(root, p)).toString('base64');
 const html = read('index.html');
 const css = read('assets/css/styles.css');
 const storm = read('assets/js/storm.js');
+const sound = read('assets/js/sound.js');
 const scene = read('assets/js/scene.js');
 
 const video = `data:video/mp4;base64,${b64('assets/video/hero-embed.mp4')}`;
@@ -44,6 +45,9 @@ html, body { max-width: 100%; }
 ${body}
 <script>
 ${storm}
+</script>
+<script>
+${sound}
 </script>
 <script>
 ${scene}

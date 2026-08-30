@@ -140,6 +140,25 @@ Each block carries normalised in/out points:
 these numbers — nothing else. To lengthen or shorten the scrub itself, change
 `.hero { height }` in `assets/css/styles.css`.
 
+## Sound
+
+The footage arrives silent, so the wind is **synthesised rather than shipped**:
+looping noise through a gusting lowpass for the storm body, a 38 Hz sine
+underneath for weight. Both are driven by the same intensity curve that moves
+the instrument readout, so the mix tracks scroll position exactly and there is
+no audio file to download.
+
+It is **off until asked for**, via the control in the top right. Browsers block
+unprompted audio anyway, and a site that makes noise at you unasked is a site
+people close. The choice is deliberately not remembered across visits: audio
+needs a user gesture to start, so a remembered "on" could only fire on some
+later unrelated click — exactly the unasked-for noise this avoids.
+
+Sound belongs to the hero. Past it the mix falls to silence.
+
+Tuning is in `assets/js/sound.js`: `windGain` and `subGain` set the balance,
+the LFO frequency and depth set how often it gusts.
+
 ## Product slots
 
 Every placeholder is a `.slot` with an empty `data-src`. Fill one by pointing

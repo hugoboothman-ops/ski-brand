@@ -26,7 +26,7 @@
 
   /* Footage is panned in slightly so the frame edges never show.
      1 shows the delivered frame exactly; raise it to crop tighter. */
-  --hero-zoom: 1.06;
+  --hero-zoom: 1.12;
 
   /* driven from JS */
   --iris: 140%;
@@ -547,6 +547,52 @@ body {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--slate-dim);
+}
+
+/* --------------------------------------------------------------------------
+   Sound toggle
+   -------------------------------------------------------------------------- */
+
+.sound {
+  position: fixed;
+  top: max(1.15rem, env(safe-area-inset-top));
+  right: var(--gut-r);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--slate);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 600ms ease, color 250ms ease;
+}
+.sound.is-ready { opacity: 1; }
+.sound:hover { color: var(--bone); }
+.sound[aria-pressed="true"] { color: var(--bone); }
+
+.sound__dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+.sound[aria-pressed="true"] .sound__dot {
+  border-color: var(--brass);
+  background: var(--brass);
+  /* Scales with the storm while it plays, so the control reports the mix. */
+  transform: scale(calc(0.8 + var(--level, 0) * 0.7));
+}
+
+@media (max-width: 30rem) {
+  .sound__text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .sound__dot { width: 0.6rem; height: 0.6rem; }
 }
 
 /* --------------------------------------------------------------------------
