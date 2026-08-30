@@ -25,6 +25,20 @@ default. Python's `http.server` does not, which is why `npm run dev` runs
 `tools/serve.mjs` instead. The site detects the failure at runtime and falls
 back to the live canvas storm, but that is a safety net, not the intent.
 
+## Deploying
+
+A GitHub Actions workflow (`.github/workflows/deploy.yml`) publishes the site
+to GitHub Pages on every push. It needs Pages switched on once, by hand:
+
+**Settings → Pages → Build and deployment → Source → GitHub Actions**
+
+Then re-run the workflow from the Actions tab. The site lands at
+`https://<owner>.github.io/<repo>/`. All asset paths are relative, so it works
+from a subpath without configuration.
+
+Netlify and Vercel need no config either — point them at the repository, leave
+the build command empty and the publish directory as the repository root.
+
 ## The concept
 
 Blackout theatre, in five acts.
