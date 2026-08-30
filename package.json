@@ -2,12 +2,15 @@
   "name": "kalthaus",
   "version": "0.1.0",
   "private": true,
-  "description": "KALTHAUS \u2014 scroll-scrubbed alpine outerwear site",
+  "description": "KALTHAUS — scroll-scrubbed alpine outerwear site",
   "scripts": {
     "dev": "node tools/serve.mjs",
     "placeholder": "node tools/render-placeholder.mjs"
   },
   "devDependencies": {
     "playwright-core": "^1.49.1"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0"
   }
 }

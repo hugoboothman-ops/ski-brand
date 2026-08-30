@@ -10,7 +10,7 @@ mkdirSync(out, { recursive: true });
 
 const url = process.argv[2] || 'http://localhost:4173/';
 const marks = (process.argv[3] || '0,0.04,0.09,0.16,0.23,0.30,0.36,0.44,0.52,0.62,0.72,0.86,0.96')
-  .split(',').map(Number);
+  .split(',').map((v) => (v.startsWith('h:') ? v : Number(v)));
 const vw = Number(process.argv[4]) || 1440;
 const vh = Number(process.argv[5]) || 900;
 
@@ -26,13 +26,22 @@ page.on('pageerror', (e) => errors.push('PAGEERROR ' + e.message));
 await page.goto(url, { waitUntil: 'domcontentloaded' });
 await page.waitForTimeout(6000);
 
-for (const m of marks) {
-  await page.evaluate((f) => {
+// Values prefixed h: are positions on the hero video timeline rather than
+// fractions of the whole page — which is what you actually want to inspect.
+for (const raw of marks) {
+  const heroT = typeof raw === 'string' && raw.startsWith('h:');
+  const m = heroT ? parseFloat(raw.slice(2)) : raw;
+  await page.evaluate(([f, onHero]) => {
     const run = document.documentElement.scrollHeight - window.innerHeight;
-    window.scrollTo(0, run * f);
-  }, m);
+    if (onHero) {
+      const hero = document.getElementById('hero');
+      window.scrollTo(0, (hero.offsetHeight - window.innerHeight) * f);
+    } else {
+      window.scrollTo(0, run * f);
+    }
+  }, [m, heroT]);
   await page.waitForTimeout(1400);
-  const name = `site-${String(Math.round(m * 100)).padStart(3, '0')}-${vw}.png`;
+  const name = `site-${heroT ? 'h' : 'p'}${String(Math.round(m * 100)).padStart(3, '0')}-${vw}.png`;
   await page.screenshot({ path: resolve(out, name) });
   console.log(name);
 }

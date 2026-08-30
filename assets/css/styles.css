@@ -154,8 +154,9 @@ body {
 
 .hero {
   position: relative;
-  /* Scroll distance = scrub length. 620vh gives the sequence room to breathe. */
-  height: 620vh;
+  /* Scroll distance = scrub length. The edit runs 25.7s; 820vh paces it at
+     roughly 300px of scroll per second of footage. */
+  height: 820vh;
 }
 
 .hero__stage {
@@ -180,6 +181,35 @@ body {
 .hero__canvas { opacity: 0; }
 .hero__stage[data-source="canvas"] .hero__video { visibility: hidden; }
 .hero__stage[data-source="canvas"] .hero__canvas { opacity: 1; }
+
+/* Scrims: legibility insurance for copy sitting over live footage. */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 650ms ease;
+}
+.hero__scrim--left {
+  opacity: var(--scrim-l, 0);
+  background: linear-gradient(100deg,
+    rgba(5, 6, 7, 0.92) 0%,
+    rgba(5, 6, 7, 0.80) 28%,
+    rgba(5, 6, 7, 0.52) 54%,
+    rgba(5, 6, 7, 0) 84%);
+}
+.hero__scrim--right {
+  opacity: var(--scrim-r, 0);
+  background: linear-gradient(260deg,
+    rgba(5, 6, 7, 0.88) 0%,
+    rgba(5, 6, 7, 0.62) 26%,
+    rgba(5, 6, 7, 0.28) 48%,
+    rgba(5, 6, 7, 0) 68%);
+}
+.hero__scrim--open {
+  opacity: var(--scrim-o, 0);
+  background: radial-gradient(ellipse 58% 52% at 50% 50%,
+    rgba(5, 6, 7, 0.78), rgba(5, 6, 7, 0) 72%);
+}
 
 /* Iris: attention narrows as Act III closes in. */
 .hero__iris {
@@ -259,7 +289,7 @@ body {
   font-size: 0.66rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--slate-dim);
+  color: var(--slate);
   text-indent: 0.3em;
 }
 
@@ -519,8 +549,8 @@ body {
   right: 0;
   bottom: 0;
   z-index: 40;
-  padding: 0.7rem var(--gut-r) calc(0.85rem + env(safe-area-inset-bottom)) var(--gut-l);
-  background: linear-gradient(transparent, rgba(5, 6, 7, 0.88) 55%);
+  padding: 1.5rem var(--gut-r) calc(0.85rem + env(safe-area-inset-bottom)) var(--gut-l);
+  background: linear-gradient(transparent, rgba(5, 6, 7, 0.6) 34%, rgba(5, 6, 7, 0.96) 78%);
   pointer-events: none;
   opacity: 0;
   transition: opacity 600ms ease;

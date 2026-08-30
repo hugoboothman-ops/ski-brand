@@ -123,6 +123,7 @@
      ------------------------------------------------------------------------ */
 
   function updateCues(t) {
+    var left = 0, right = 0, open = 0;
     for (var i = 0; i < cues.length; i++) {
       var c = cues[i];
       var live = t >= c.from && t <= c.to;
@@ -130,21 +131,30 @@
         c.live = live;
         c.el.classList.toggle('is-live', live);
       }
+      if (!live) continue;
+      if (c.el.classList.contains('cue--quote')) right = 1;
+      else if (c.el.classList.contains('cue--open')) open = 1;
+      else left = 1;
     }
+    if (left !== scrim.l) stage.style.setProperty('--scrim-l', (scrim.l = left));
+    if (right !== scrim.r) stage.style.setProperty('--scrim-r', (scrim.r = right));
+    if (open !== scrim.o) stage.style.setProperty('--scrim-o', (scrim.o = open));
   }
+
+  var scrim = { l: -1, r: -1, o: -1 };
 
   /* ------------------------------------------------------------------------
      Instrument readout
      ------------------------------------------------------------------------ */
 
-  var ACTS = ['I &mdash; Environment', 'II &mdash; Arrival', 'III &mdash; Reveal',
+  var ACTS = ['I &mdash; Arrival', 'II &mdash; Reveal', 'III &mdash; Environment',
               'IV &mdash; Winter 01', 'V &mdash; Close'];
 
   function currentAct(t, past) {
     if (past === 'range') return 3;
     if (past === 'close') return 4;
-    if (t < 0.36) return 0;
-    if (t < 0.66) return 1;
+    if (t < 0.16) return 0;
+    if (t < 0.33) return 1;
     return 2;
   }
 
@@ -222,7 +232,7 @@
     /* Theatre iris: a tight pool of light on the cold open, wide for the
        weather, then closing hard as attention narrows onto the kit. */
     var iris = lerp(58, 145, ramp(t, 0, 0.12));
-    iris = lerp(iris, 44, s.push);
+    iris = lerp(iris, 104, s.push);
     root.style.setProperty('--iris', iris.toFixed(1) + '%');
 
     scrollcue.classList.toggle('is-gone', t > 0.03);

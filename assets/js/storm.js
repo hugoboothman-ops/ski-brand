@@ -44,10 +44,10 @@
     t = clamp(t, 0, 1);
 
     var intensity;
-    if (t < 0.10) intensity = lerp(0.18, 0.46, t / 0.10);
-    else if (t < 0.40) intensity = lerp(0.46, 1, (t - 0.10) / 0.30);
-    else if (t < 0.66) intensity = 1;
-    else intensity = lerp(1, 0.26, ease((t - 0.66) / 0.34));
+    if (t < 0.12) intensity = lerp(0.16, 0.34, t / 0.12);
+    else if (t < 0.40) intensity = lerp(0.34, 1, (t - 0.12) / 0.28);
+    else if (t < 0.92) intensity = 1;
+    else intensity = lerp(1, 0.62, ease((t - 0.92) / 0.08));
 
     return {
       t: t,

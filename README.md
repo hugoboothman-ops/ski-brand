@@ -48,41 +48,48 @@ the build command empty and the publish directory as the repository root.
 
 Blackout theatre, in five acts.
 
-| Act | | Where |
-|---|---|---|
-| — | Cold open, in near-darkness | hero, `t 0.00–0.10` |
-| I | **Environment** — the weather, before anything else | hero, `t 0.13–0.34` |
-| II | **Arrival** — a lone figure, still, in contrast to the storm | hero, `t 0.40–0.63` |
-| III | **Reveal** — attention narrows onto the kit | hero, `t 0.70–0.94` |
-| IV | **Product** — Winter 01 | `#range` |
-| V | **Close** — the storm stops | `#close` |
+The acts follow the footage's own beats, not an imposed structure:
 
-Product is a consequence of the environment, not a shop front: the garment is
-literally invisible until the camera pushes into it in Act III.
+| Act | | Timeline | What is on screen |
+|---|---|---|---|
+| — | Cold open | `0.00–0.055` | Eye contact, hood up, white ground |
+| I | **Arrival** | `0.075–0.145` | The portrait, still holding |
+| II | **Reveal** | `0.17–0.28` | Camera pulls back; skis, shell, poles |
+| III | **Environment** | `0.38–0.60` | Ground cuts to black, snow lets go |
+| — | Pull quote | `0.66–0.88` | Stillness against chaos |
+| IV | **Product** | `#range` | Winter 01 |
+| V | **Close** | `#close` | The storm stops |
 
-The figure is drawn as an **absence**. The storm is rendered across the whole
-frame, then the silhouette is punched out of it with `destination-out`. The
-only still thing on screen is a hole in the weather. As Act III pushes in, the
-hole fills with fabric and seams — the reveal is the silhouette becoming
-material.
+Product is a consequence of the environment, not a shop front: the kit is only
+named once the camera has pulled back far enough to show it being worn.
 
-## Swapping in the real footage
+**Scrims, not a repaint.** The edit cuts between white grounds and black
+grounds several times, so light copy cannot survive on its own and a
+scroll-locked light/dark type inversion would strobe as the shots cut. Instead
+a gradient scrim fades in behind the copy — and only while copy is on screen,
+so the image is never dimmed for nothing. Opacity is driven from which cue is
+live (`--scrim-l`, `--scrim-r`, `--scrim-o`).
 
-The hero currently plays generated placeholder footage. To replace it:
+## The footage
 
-1. Drop the final files into `assets/video/`.
-2. Update the `<source>` elements in `index.html`:
+`assets/video/hero.mp4` is the graded edit, 25.7s at 1280×720. It was
+delivered in two halves and joined before encoding:
 
-   ```html
-   <video class="hero__video" id="hero-video" ...>
-     <source src="assets/video/hero.mp4"  type="video/mp4">
-     <source src="assets/video/hero.webm" type="video/webm">
-   </video>
-   ```
+```sh
+# strip the attached-picture stream so concat sees one video stream each
+ffmpeg -i part1.mov -map 0:0 -an -c copy a.mp4
+ffmpeg -i part2.mov -map 0:0 -an -c copy b.mp4
+printf "file 'a.mp4'\nfile 'b.mp4'\n" > list.txt
+ffmpeg -f concat -safe 0 -i list.txt -c copy joined.mp4
+```
 
-   List MP4 first — Safari's WebM support is partial, and the placeholder is
-   VP8/WebM only because that is what the sandbox could encode.
-3. Update `poster` to a frame from the new edit.
+**H.264 MP4 only, deliberately.** Every current browser decodes H.264, and an
+all-keyframe WebM of the same edit came to 17 MB against the MP4's 9 MB —
+weight for an audience that does not exist. Add a WebM source only if
+analytics turn one up.
+
+To replace the edit, drop the new file at the same path, re-encode as below,
+and update `poster`.
 
 ### Encoding for scrubbing
 
@@ -92,16 +99,18 @@ the last keyframe and the scrub stutters. **Encode the hero with every frame a
 keyframe:**
 
 ```sh
-ffmpeg -i master.mov -c:v libx264 -crf 20 -g 1 -keyint_min 1 \
-       -pix_fmt yuv420p -movflags +faststart -an assets/video/hero.mp4
-
-ffmpeg -i master.mov -c:v libvpx-vp9 -crf 32 -b:v 0 -g 1 \
-       -an assets/video/hero.webm
+ffmpeg -i joined.mp4 -an -c:v libx264 -preset slow -crf 26 \
+       -g 1 -keyint_min 1 -sc_threshold 0 \
+       -pix_fmt yuv420p -movflags +faststart -vf fps=24 \
+       assets/video/hero.mp4
 ```
 
-This inflates the file — budget for it. Keep the hero under about 12 MB:
-1280×720 at 24fps is plenty, since the frame is dark and mostly atmosphere.
-Strip the audio track; the hero is silent by design.
+This inflates the file — budget for it. The current edit lands at 9.0 MB;
+keep the hero under about 12 MB. 1280×720 at 24fps is plenty. Strip the audio
+track; the hero is silent by design.
+
+Scroll length is set by `.hero { height }` in the stylesheet — 820vh paces
+25.7s of footage at roughly 300px of scroll per second.
 
 ### Re-timing the copy
 
@@ -145,13 +154,22 @@ npm run placeholder
 headless Chromium and pipes the frames to ffmpeg. Because the simulation is
 seeded and stepped with a fixed `dt`, the render is reproducible.
 
-`tools/shoot-site.mjs` screenshots the running site at a list of scroll
-positions, which is the quickest way to check the whole scroll after a change:
+`tools/shoot-site.mjs` screenshots the running site at a list of positions.
+Prefix a value with `h:` to address the hero video timeline rather than the
+whole page, which is what you want when checking where copy lands:
 
 ```
-node tools/shoot-site.mjs http://localhost:4173/ 0.02,0.3,0.75,1.0
-node tools/shoot-site.mjs http://localhost:4173/ 0.02,0.3 390 844   # mobile
+./tools/preview-build.sh                                            # first
+node tools/shoot-site.mjs http://localhost:4173/index-fonttest.html h:0.11,h:0.45
+node tools/shoot-site.mjs http://localhost:4173/index-fonttest.html 0.8,1.0 390 844
 ```
+
+**Why the preview copy exists.** The sandbox browser cannot reach
+`fonts.googleapis.com` and its Chromium is built without H.264, so screenshots
+of `index.html` silently render in fallback fonts with the hero dropped to the
+canvas fallback. `tools/preview-build.sh` writes `index-fonttest.html` with
+self-hosted fonts and a VP9 copy of the hero substituted in. Neither
+substitution ships; both exist so what you review is what users get.
 
 `tools/preview-frames.mjs` renders single frames across the timeline into
 `tools/preview/` for checking the look without a full encode:

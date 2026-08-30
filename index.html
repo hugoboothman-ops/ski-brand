@@ -36,51 +36,59 @@
     <video class="hero__video" id="hero-video" width="1280" height="720"
            playsinline muted preload="auto" disablepictureinpicture
            poster="assets/video/hero-poster.jpg" aria-hidden="true">
-      <!-- Final footage: supply H.264 MP4 first, WebM second. -->
-      <source src="assets/video/hero-placeholder.webm" type="video/webm">
+      <source src="assets/video/hero.mp4" type="video/mp4">
     </video>
 
     <!-- Fallback storm: drawn only if the video cannot decode. -->
     <canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas>
+
+    <!-- Scrims fade in only while copy is over the footage, so the image is
+         never dimmed for nothing. The edit cuts between white and black
+         grounds, so light type cannot survive on its own. -->
+    <div class="hero__scrim hero__scrim--open" aria-hidden="true"></div>
+    <div class="hero__scrim hero__scrim--left" aria-hidden="true"></div>
+    <div class="hero__scrim hero__scrim--right" aria-hidden="true"></div>
 
     <div class="hero__iris" aria-hidden="true"></div>
     <div class="hero__grain" aria-hidden="true"></div>
 
     <div class="hero__overlay">
 
-      <!-- ACT 0 — cold open -->
-      <div class="cue cue--open" data-in="0" data-out="0.10">
+      <!-- ACT 0 — cold open: the eye-contact close-up -->
+      <div class="cue cue--open" data-in="0" data-out="0.055">
         <h1 class="wordmark" id="hero-title">Kalthaus</h1>
         <p class="wordmark__sub">Alpine outerwear &middot; Winter 01</p>
       </div>
 
-      <!-- ACT I — environment -->
-      <div class="cue cue--left" data-in="0.13" data-out="0.34">
-        <p class="eyebrow">Act I &mdash; Environment</p>
-        <h2 class="display"><span>First,</span><span>the weather.</span></h2>
-        <p class="lede">At 2,940&nbsp;metres the light lasts three hours and the wind
-        writes the schedule. The lifts stop. The pistes empty. What is left is
-        weather, and the few people who came for it.</p>
+      <!-- ACT I — arrival: still on the portrait -->
+      <div class="cue cue--left" data-in="0.075" data-out="0.145">
+        <p class="eyebrow">Act I &mdash; Arrival</p>
+        <h2 class="display"><span>Someone</span><span>stayed.</span></h2>
+        <p class="lede">The lifts stopped at two and the pistes emptied. One
+        person put the hood up and walked back out into it.</p>
       </div>
 
-      <!-- ACT II — arrival -->
-      <div class="cue cue--left" data-in="0.40" data-out="0.63">
-        <p class="eyebrow">Act II &mdash; Arrival</p>
-        <h2 class="display"><span>Then,</span><span>someone</span><span>stayed.</span></h2>
-      </div>
-
-      <div class="cue cue--quote" data-in="0.47" data-out="0.63">
-        <p class="quote">Everything on this mountain is moving.<br>One thing is not.</p>
-        <p class="stamp">Observed 16:41 &middot; north face</p>
-      </div>
-
-      <!-- ACT III — reveal -->
-      <div class="cue cue--left" data-in="0.70" data-out="0.94">
-        <p class="eyebrow">Act III &mdash; Reveal</p>
+      <!-- ACT II — reveal: the camera pulls back onto the kit -->
+      <div class="cue cue--left" data-in="0.17" data-out="0.28">
+        <p class="eyebrow">Act II &mdash; Reveal</p>
         <h2 class="display"><span>Only then,</span><span>the kit.</span></h2>
         <p class="lede">Nothing here is styling. Every seam is an answer to a
         specific hour of weather &mdash; the hour after the light goes, when the
         wind turns and the mountain belongs to whoever dressed for it.</p>
+      </div>
+
+      <!-- ACT III — environment: the ground cuts to black and the snow lets go -->
+      <div class="cue cue--left" data-in="0.38" data-out="0.60">
+        <p class="eyebrow">Act III &mdash; Environment</p>
+        <h2 class="display"><span>And then,</span><span>the weather.</span></h2>
+        <p class="lede">At 2,940&nbsp;metres the light lasts three hours and the
+        wind writes the schedule. What is left is weather, and the few people
+        who came for it.</p>
+      </div>
+
+      <div class="cue cue--quote" data-in="0.66" data-out="0.88">
+        <p class="quote">Everything on this mountain is moving.<br>One thing is not.</p>
+        <p class="stamp">Observed 16:41 &middot; north face</p>
       </div>
 
     </div>
