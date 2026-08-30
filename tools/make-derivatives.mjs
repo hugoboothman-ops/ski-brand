@@ -37,8 +37,8 @@ const jobs = [
   },
   {
     out: 'assets/video/hero-embed.mp4',
-    args: ['-an', '-vf', 'fps=24,scale=960:540', '-c:v', 'libx264', '-preset', 'slow',
-           '-crf', '31', '-g', '1', '-keyint_min', '1', '-sc_threshold', '0',
+    args: ['-an', '-vf', 'fps=24', '-c:v', 'libx264', '-preset', 'slow',
+           '-crf', '30', '-g', '1', '-keyint_min', '1', '-sc_threshold', '0',
            '-pix_fmt', 'yuv420p', '-movflags', '+faststart']
   }
 ];

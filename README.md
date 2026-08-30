@@ -90,9 +90,15 @@ ffmpeg -f concat -safe 0 -i list.txt -c copy joined.mp4
 ```
 
 **H.264 MP4 only, deliberately.** Every current browser decodes H.264, and an
-all-keyframe WebM of the same edit came to 17 MB against the MP4's 9 MB —
+all-keyframe WebM of the same edit came to 16 MB against the MP4's 12 MB —
 weight for an audience that does not exist. Add a WebM source only if
 analytics turn one up.
+
+**The master is 1280×720, and that is the quality ceiling.** `object-fit:
+cover` plus the pan scales it about 1.3× on a 1440-wide window, and roughly
+2.6× on a retina screen. Most of the softness is that upscale, not the
+encode — dropping CRF from 26 to 22 cost 3.4 MB for a small gain. A 1080p or
+4K master would do far more than any encoder setting.
 
 To replace the edit, drop the new file at the same path, re-encode as below,
 and update `poster`.
@@ -105,18 +111,21 @@ the last keyframe and the scrub stutters. **Encode the hero with every frame a
 keyframe:**
 
 ```sh
-ffmpeg -i joined.mp4 -an -c:v libx264 -preset slow -crf 26 \
+ffmpeg -i joined.mp4 -an -c:v libx264 -preset veryslow -crf 22 \
        -g 1 -keyint_min 1 -sc_threshold 0 \
        -pix_fmt yuv420p -movflags +faststart -vf fps=24 \
        assets/video/hero.mp4
 ```
 
-This inflates the file — budget for it. The current edit lands at 9.0 MB;
-keep the hero under about 12 MB. 1280×720 at 24fps is plenty. Strip the audio
-track; the hero is silent by design.
+This inflates the file — budget for it. The current edit lands at 12.4 MB.
+Strip the audio track; the hero is silent by design.
 
-Scroll length is set by `.hero { height }` in the stylesheet — 820vh paces
-25.7s of footage at roughly 300px of scroll per second.
+Two knobs in the stylesheet:
+
+| | |
+|---|---|
+| `.hero { height }` | Scroll length. 820vh paces 25.7s at ~300px of scroll per second |
+| `--hero-zoom` | How far the footage is panned in. `1` shows the delivered frame exactly; `1.06` crops the edges |
 
 ### Re-timing the copy
 
@@ -183,7 +192,7 @@ rebuilds them from `assets/video/hero.mp4`:
 | File | Why |
 |---|---|
 | `hero-verify.webm` | VP9, so the sandbox Chromium can decode it |
-| `hero-embed.mp4` | 960×540, small enough to inline as a data URI in the artifact bundle |
+| `hero-embed.mp4` | Lower bitrate, small enough to inline as a data URI in the artifact bundle |
 
 `tools/preview-frames.mjs` renders single frames across the timeline into
 `tools/preview/` for checking the look without a full encode:
