@@ -24,7 +24,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # Ship the site only — tooling and the render scripts stay out of it.
       - name: Stage the site
@@ -35,7 +35,11 @@ jobs:
           touch _site/.nojekyll
           du -sh _site
 
+      # enablement creates the Pages site on first run, so this does not
+      # need switching on by hand.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

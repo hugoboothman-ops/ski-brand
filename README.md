@@ -28,13 +28,15 @@ back to the live canvas storm, but that is a safety net, not the intent.
 ## Deploying
 
 A GitHub Actions workflow (`.github/workflows/deploy.yml`) publishes the site
-to GitHub Pages on every push. It needs Pages switched on once, by hand:
+to GitHub Pages on every push, and creates the Pages site itself on the first
+run (`enablement: true`), so there is nothing to switch on by hand.
 
-**Settings → Pages → Build and deployment → Source → GitHub Actions**
+The site lands at `https://<owner>.github.io/<repo>/`. All asset paths are
+relative, so it works from a subpath without configuration.
 
-Then re-run the workflow from the Actions tab. The site lands at
-`https://<owner>.github.io/<repo>/`. All asset paths are relative, so it works
-from a subpath without configuration.
+If the first run fails on `configure-pages` with `Not Found`, the token was
+not allowed to create the site — switch it on once under **Settings → Pages →
+Build and deployment → Source → GitHub Actions**, then re-run the workflow.
 
 Netlify and Vercel need no config either — point them at the repository, leave
 the build command empty and the publish directory as the repository root.
